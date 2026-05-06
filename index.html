@@ -5,734 +5,612 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>리스타트 교육과정 일정표</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
-  :root {
-    --ulim:       #0F6E56;
-    --ulim-bg:    #E1F5EE;
-    --sabujak:    #3C3489;
-    --sabujak-bg: #EEEDFE;
-    --woori:      #633806;
-    --woori-bg:   #FAEEDA;
-    --saenghyup:  #27500A;
-    --saenghyup-bg: #EAF3DE;
-    --common:     #0C447C;
-    --common-bg:  #E6F1FB;
-    --border:     #e2e2e2;
-    --text:       #1a1a1a;
-    --text-muted: #6b7280;
-    --bg:         #f8f8f6;
-    --white:      #ffffff;
-    --radius:     8px;
-  }
+:root {
+  --ulim:         #0F6E56; --ulim-bg:   #E1F5EE; --ulim-bd:   #5DCAA5;
+  --sabujak:      #3C3489; --sabujak-bg:#EEEDFE; --sabujak-bd:#AFA9EC;
+  --woori:        #633806; --woori-bg:  #FAEEDA; --woori-bd:  #EF9F27;
+  --saenghyup:    #27500A; --saenghyup-bg:#EAF3DE;--saenghyup-bd:#97C459;
+  --common:       #0C447C; --common-bg: #E6F1FB; --common-bd: #85B7EB;
+  --border:       #e4e4e0;
+  --border-light: #f0f0ec;
+  --text:         #1a1a1a;
+  --muted:        #6b7280;
+  --hint:         #9ca3af;
+  --bg:           #f5f5f2;
+  --white:        #ffffff;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1rem 4rem;
-  }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
-  header {
-    max-width: 960px;
-    margin: 0 auto 2rem;
-  }
+.top-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 13px 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-  header h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.25rem;
-  }
+.top-bar h1 { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.02em; flex: 1; }
+.top-bar p  { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
 
-  header p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
+.layout {
+  display: flex;
+  height: calc(100vh - 49px);
+}
 
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1.5rem;
-    max-width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+/* 왼쪽 캘린더 */
+.left-panel {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 18px 18px 40px;
+  border-right: 1px solid var(--border);
+}
 
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 4px 10px;
-  }
+/* 오른쪽 패널 */
+.right-panel {
+  width: 340px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: var(--white);
+}
 
-  .legend-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
+/* 범례 */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 12px;
+}
 
-  .month-nav {
-    display: flex;
-    gap: 6px;
-    max-width: 960px;
-    margin: 0 auto 1rem;
-  }
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
 
-  .month-btn {
-    padding: 6px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--white);
-    font-size: 0.85rem;
-    font-family: inherit;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: all 0.15s;
-  }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
-  .month-btn:hover { background: #f0f0ee; }
+/* 월 탭 */
+.month-nav { display: flex; gap: 5px; margin-bottom: 10px; }
 
-  .month-btn.active {
-    background: var(--text);
-    color: var(--white);
-    border-color: var(--text);
-  }
+.month-btn {
+  padding: 5px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-size: 0.78rem;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.1s;
+}
 
-  .calendar {
-    max-width: 960px;
-    margin: 0 auto;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
+.month-btn:hover { background: #f0f0ec; }
+.month-btn.active { background: var(--text); color: var(--white); border-color: var(--text); }
 
-  .cal-header {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    border-bottom: 1px solid var(--border);
-    background: #fafaf8;
-  }
+/* 캘린더 */
+.cal-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-  .cal-header-cell {
-    padding: 10px 0;
-    text-align: center;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-muted);
-  }
+.cal-head-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: #fafaf8;
+  border-bottom: 1px solid var(--border);
+}
 
-  .cal-header-cell.sun { color: #dc2626; }
-  .cal-header-cell.sat { color: #2563eb; }
+.cal-head-cell {
+  padding: 8px 0;
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--muted);
+}
 
-  .cal-body {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-  }
+.cal-head-cell.sun { color: #dc2626; }
+.cal-head-cell.sat { color: #2563eb; }
 
-  .cal-cell {
-    min-height: 110px;
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 6px;
-    vertical-align: top;
-  }
+.cal-body-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
 
-  .cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell {
+  min-height: 90px;
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  padding: 5px;
+}
 
-  .cal-cell.other { background: #fafaf8; }
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell.other { background: #fafaf9; }
 
-  .day-num {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin-bottom: 4px;
-  }
+.day-num {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--muted);
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 3px;
+}
 
-  .day-num.sun { color: #dc2626; }
-  .day-num.sat { color: #2563eb; }
-  .day-num.other { color: #d1d5db; }
+.day-num.sun   { color: #dc2626; }
+.day-num.sat   { color: #2563eb; }
+.day-num.other { color: #d1d5db; }
 
-  .event {
-    display: block;
-    font-size: 0.68rem;
-    line-height: 1.4;
-    padding: 3px 6px;
-    border-radius: 4px;
-    margin-bottom: 3px;
-    cursor: pointer;
-    border: none;
-    text-align: left;
-    font-family: inherit;
-    width: 100%;
-    transition: opacity 0.1s;
-  }
+.ev-chip {
+  display: block;
+  font-size: 0.62rem;
+  line-height: 1.35;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+  transition: opacity 0.1s, transform 0.1s;
+}
 
-  .event:hover { opacity: 0.75; }
+.ev-chip:hover   { opacity: 0.75; transform: translateY(-1px); }
+.ev-chip.selected { outline: 2px solid currentColor; outline-offset: 1px; }
 
-  .tooltip-area {
-    max-width: 960px;
-    margin: 1rem auto 0;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-    min-height: 56px;
-  }
+/* 오른쪽 패널 공통 */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.73rem;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  background: #fafaf8;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+  transition: color 0.1s;
+}
 
-  .tooltip-hint {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
+.back-btn:hover { color: var(--text); }
 
-  .tooltip-date {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-  }
+.panel-inner { padding: 18px 16px; }
 
-  .tooltip-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
+.panel-date-tag  { font-size: 0.68rem; color: var(--muted); margin-bottom: 5px; }
+.panel-org-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-bottom: 7px;
+}
 
-  .tooltip-rows {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 16px;
-  }
+.panel-course-label { font-size: 0.68rem; color: var(--hint); margin-bottom: 1px; }
+.panel-title        { font-size: 0.95rem; font-weight: 700; line-height: 1.5; margin-bottom: 14px; letter-spacing: -0.01em; }
 
-  .tooltip-row {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
+.panel-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-light);
+}
 
-  .tooltip-row span {
-    color: var(--text);
-    font-weight: 500;
-  }
+.panel-meta-row  { display: flex; gap: 8px; font-size: 0.73rem; }
+.panel-meta-key  { color: var(--hint); width: 32px; flex-shrink: 0; }
+.panel-meta-val  { color: var(--text); line-height: 1.5; }
 
-  .sessions {
-    max-width: 960px;
-    margin: 2.5rem auto 0;
-  }
+.section-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--hint);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 9px;
+}
 
-  .sessions h2 {
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    letter-spacing: -0.01em;
-  }
+.session-list   { display: flex; flex-direction: column; gap: 8px; }
 
-  .course-block {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    overflow: hidden;
-  }
+.session-item {
+  padding: 9px 11px;
+  border-radius: 7px;
+  border: 1px solid var(--border-light);
+  background: var(--bg);
+}
 
-  .course-head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    background: #fafaf8;
-    cursor: pointer;
-    user-select: none;
-  }
+.session-item.active-session { border-width: 1.5px; }
 
-  .course-badge {
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 999px;
-  }
+.session-row1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
 
-  .course-name {
-    font-size: 0.9rem;
-    font-weight: 700;
-    flex: 1;
-  }
+.session-num {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+}
 
-  .course-meta {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
+.session-date    { font-size: 0.65rem; color: var(--muted); }
+.session-time    { font-size: 0.62rem; color: var(--hint); margin-left: auto; }
+.session-subject { font-size: 0.76rem; font-weight: 500; line-height: 1.4; margin-bottom: 3px; }
+.session-sub     { font-size: 0.65rem; color: var(--muted); line-height: 1.4; }
+.session-instructor { font-size: 0.65rem; color: var(--hint); margin-top: 4px; }
 
-  .chevron {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    transition: transform 0.2s;
-  }
+.date-divider {
+  font-size: 0.62rem;
+  color: var(--hint);
+  padding: 6px 0 3px;
+  border-top: 1px solid var(--border-light);
+  margin-top: 4px;
+}
 
-  .course-body {
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
+/* 전체 과정 목록 */
+.all-courses { padding: 16px 14px; }
 
-  .session-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.8rem;
-  }
+.all-courses-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--hint);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
 
-  .session-table th {
-    padding: 8px 14px;
-    text-align: left;
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    background: #fafaf8;
-    border-bottom: 1px solid var(--border);
-  }
+.course-card {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  margin-bottom: 7px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
 
-  .session-table td {
-    padding: 9px 14px;
-    border-bottom: 1px solid #f0f0ee;
-    vertical-align: top;
-    line-height: 1.5;
-  }
+.course-card:hover { background: #eeeee9; }
 
-  .session-table tr:last-child td { border-bottom: none; }
+.course-card-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 3px;
+}
 
-  .session-table tr:hover td { background: #fafaf8; }
+.course-card-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+}
 
-  .sub {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
+.course-card-name { font-size: 0.78rem; font-weight: 700; }
+.course-card-meta { font-size: 0.65rem; color: var(--muted); }
 
-  @media (max-width: 640px) {
-    .cal-cell { min-height: 72px; padding: 4px; }
-    .event { font-size: 0.6rem; padding: 2px 4px; }
-    .day-num { font-size: 0.68rem; }
-    header h1 { font-size: 1.2rem; }
-  }
+/* 기본 placeholder */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  gap: 8px;
+}
+
+.placeholder p { font-size: 0.75rem; color: var(--hint); line-height: 1.7; }
+
+@media (max-width: 680px) {
+  .layout { flex-direction: column; height: auto; }
+  .left-panel { border-right: none; border-bottom: 1px solid var(--border); }
+  .right-panel { width: 100%; }
+}
 </style>
 </head>
 <body>
 
-<header>
+<div class="top-bar">
   <h1>리스타트 교육과정 일정표</h1>
-  <p>마포구사회적경제통합지원센터 · 2025년 6월 – 8월</p>
-</header>
-
-<div class="legend">
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim);"></div>
-    <span style="color:var(--ulim);">울림 — 단기돌봄과정 / 홈케어과정</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak);"></div>
-    <span style="color:var(--sabujak);">사부작 — 길동무과정</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--woori-bg);border:1px solid var(--woori);"></div>
-    <span style="color:var(--woori);">우리동생 — 반려동물통합돌봄활동가과정</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--saenghyup-bg);border:1px solid var(--saenghyup);"></div>
-    <span style="color:var(--saenghyup);">생협 — 대화의 식탁 과정</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--common-bg);border:1px solid var(--common);"></div>
-    <span style="color:var(--common);">공통과정 — 사전돌봄의향서</span>
-  </div>
+  <p>마포구사회적경제통합지원센터 · 2025년 6–8월</p>
 </div>
 
-<div class="month-nav">
-  <button class="month-btn active" onclick="showMonth(6,this)">6월</button>
-  <button class="month-btn" onclick="showMonth(7,this)">7월</button>
-  <button class="month-btn" onclick="showMonth(8,this)">8월</button>
-</div>
+<div class="layout">
 
-<div class="calendar">
-  <div class="cal-header">
-    <div class="cal-header-cell sun">일</div>
-    <div class="cal-header-cell">월</div>
-    <div class="cal-header-cell">화</div>
-    <div class="cal-header-cell">수</div>
-    <div class="cal-header-cell">목</div>
-    <div class="cal-header-cell">금</div>
-    <div class="cal-header-cell sat">토</div>
-  </div>
-  <div class="cal-body" id="cal-body"></div>
-</div>
-
-<div class="tooltip-area" id="tooltip">
-  <div class="tooltip-hint">일정을 클릭하면 상세 내용이 표시됩니다.</div>
-</div>
-
-<div class="sessions">
-  <h2>과정별 세부 커리큘럼</h2>
-
-  <!-- 공통과정 -->
-  <div class="course-block">
-    <div class="course-head" onclick="toggleCourse(this)">
-      <span class="course-badge" style="background:var(--common-bg);color:var(--common);">공통과정</span>
-      <span class="course-name">사전돌봄의향서</span>
-      <span class="course-meta">60명 · 7월 중 · 대관</span>
-      <span class="chevron">▼</span>
+  <div class="left-panel">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림 — 단기돌봄과정 / 홈케어과정</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak-bd);"></div>사부작 — 길동무과정</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--woori-bg);border:1px solid var(--woori-bd);"></div>우리동생 — 반려동물통합돌봄활동가과정</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--saenghyup-bg);border:1px solid var(--saenghyup-bd);"></div>생협 — 대화의 식탁 과정</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--common-bg);border:1px solid var(--common-bd);"></div>공통과정 — 사전돌봄의향서</div>
     </div>
-    <div class="course-body">
-      <table class="session-table">
-        <thead><tr><th>강의주제</th><th>강사</th><th>비고</th></tr></thead>
-        <tbody>
-          <tr><td>사전돌봄의향서</td><td>이경란, 박은주</td><td>—</td></tr>
-        </tbody>
-      </table>
+
+    <div class="month-nav">
+      <button class="month-btn active" onclick="showMonth(6,this)">6월</button>
+      <button class="month-btn" onclick="showMonth(7,this)">7월</button>
+      <button class="month-btn" onclick="showMonth(8,this)">8월</button>
+    </div>
+
+    <div class="cal-wrap">
+      <div class="cal-head-row">
+        <div class="cal-head-cell sun">일</div>
+        <div class="cal-head-cell">월</div>
+        <div class="cal-head-cell">화</div>
+        <div class="cal-head-cell">수</div>
+        <div class="cal-head-cell">목</div>
+        <div class="cal-head-cell">금</div>
+        <div class="cal-head-cell sat">토</div>
+      </div>
+      <div class="cal-body-grid" id="cal-body"></div>
     </div>
   </div>
 
-  <!-- 울림 단기돌봄과정 -->
-  <div class="course-block">
-    <div class="course-head" onclick="toggleCourse(this)">
-      <span class="course-badge" style="background:var(--ulim-bg);color:var(--ulim);">울림</span>
-      <span class="course-name">단기돌봄과정</span>
-      <span class="course-meta">13명 · 7/7, 7/14 (화) · 자체공간 · 담당: 강경미 010-7235-8535</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="course-body">
-      <table class="session-table">
-        <thead><tr><th style="width:10%">일자</th><th style="width:18%">시간</th><th style="width:45%">강의주제</th><th style="width:15%">강사</th></tr></thead>
-        <tbody>
-          <tr>
-            <td rowspan="5">7/7 (화)</td>
-            <td>13:30~14:20</td>
-            <td>돌봄상황적 실전교육<div class="sub">거동불편, 초기치매, 영양, 신체위생, 환경위생</div></td>
-            <td>강경미</td>
-          </tr>
-          <tr>
-            <td>14:30~15:20</td>
-            <td>돌봄SOS 좋은사례<div class="sub">일상회복, 돌봄SOS 지속이용, 장기요양, 중장년사례</div></td>
-            <td>오성화</td>
-          </tr>
-          <tr>
-            <td>15:30~16:00</td>
-            <td>돌봄기준 및 업무메뉴얼<div class="sub">울림케어 기준, 울림케어메뉴얼</div></td>
-            <td>강경미</td>
-          </tr>
-          <tr>
-            <td>16:10~16:40</td>
-            <td>응급상황대처, 성폭력예방 교육</td>
-            <td>박지연</td>
-          </tr>
-          <tr>
-            <td>16:50~17:20</td>
-            <td>돌봄 실전<div class="sub">관찰/공간·복지용구/기록지 작성법/앱사용법/케어매니저와의 소통</div></td>
-            <td>천은화</td>
-          </tr>
-          <tr>
-            <td rowspan="4">7/14 (화)</td>
-            <td>13:30~14:20</td>
-            <td>돌봄의 태도와 기술 1<div class="sub">소통, 대화법</div></td>
-            <td>고은주</td>
-          </tr>
-          <tr>
-            <td>14:20~14:50</td>
-            <td>돌봄의 태도와 기술 2<div class="sub">요양보호사 사례</div></td>
-            <td>요양보호사</td>
-          </tr>
-          <tr>
-            <td>16:00~16:30</td>
-            <td>제도에 대한 이해</td>
-            <td>박지연</td>
-          </tr>
-          <tr>
-            <td>16:40~17:20</td>
-            <td>사전돌봄의향서 워크숍</td>
-            <td>이경란</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 울림 홈케어과정 -->
-  <div class="course-block">
-    <div class="course-head" onclick="toggleCourse(this)">
-      <span class="course-badge" style="background:var(--ulim-bg);color:var(--ulim);">울림</span>
-      <span class="course-name">홈케어과정</span>
-      <span class="course-meta">12명 · 7/9, 7/16, 7/23 (목) · 자체공간 · 담당: 오성화 010-5202-6908</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="course-body">
-      <table class="session-table">
-        <thead><tr><th>일정</th><th>비고</th></tr></thead>
-        <tbody>
-          <tr><td>7/9 (목)</td><td>세부 강의내용 미정</td></tr>
-          <tr><td>7/16 (목)</td><td>세부 강의내용 미정</td></tr>
-          <tr><td>7/23 (목)</td><td>세부 강의내용 미정</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 사부작 길동무과정 -->
-  <div class="course-block">
-    <div class="course-head" onclick="toggleCourse(this)">
-      <span class="course-badge" style="background:var(--sabujak-bg);color:var(--sabujak);">사부작</span>
-      <span class="course-name">길동무과정</span>
-      <span class="course-meta">10명 · 6/9~6/25 · 대관 · 담당: 최경화 010-5226-6430</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="course-body">
-      <table class="session-table">
-        <thead><tr><th style="width:7%">회차</th><th style="width:12%">일자</th><th style="width:14%">시간</th><th style="width:40%">강의주제</th><th style="width:14%">강사</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>1강</td><td>6/9 (화)</td><td>14:00~16:00</td>
-            <td>"장애를 어떻게 볼 것인가?"<div class="sub">비발달장애인·발달장애인 주민이 서로를 감각하고 관계 맺기</div></td>
-            <td>연두(이남실)</td>
-          </tr>
-          <tr>
-            <td>2강</td><td>6/10 (수)</td><td>14:00~16:00</td>
-            <td>사부작 이야기<div class="sub">발달장애 청년들과 마을을 연결하는 허브 '사부작' 소개</div></td>
-            <td>소피아(최경화)</td>
-          </tr>
-          <tr>
-            <td>3강</td><td>6/16 (화)</td><td>14:00~16:00</td>
-            <td>마을의 길동무들 그리고 "나도 길동무가 되고 싶다."<div class="sub">사부작청년들과 길동무가 만들어가는 마을 돌봄 생태계</div></td>
-            <td>꽃다지(조승연)</td>
-          </tr>
-          <tr>
-            <td>4강</td><td>6/17 (수)</td><td>14:00~16:00</td>
-            <td>길동무들과 함께 '어른이 되면'<div class="sub">동생의 탈시설 후 사부작청년과 길동무가 된 혜정·혜영 이야기</div></td>
-            <td>장혜정, 장혜영</td>
-          </tr>
-          <tr>
-            <td>5강</td><td>6/25 (목)</td><td>14:00~16:00</td>
-            <td>훌라 워크숍 그리고 소감 나누기<div class="sub">사부작청년·길동무 함께하는 훌라 워크숍 / "나는 어떤 길동무가 될 수 있을까?" 회고</div></td>
-            <td>선샤인아놀드훌라</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 우리동생 반려동물통합돌봄활동가과정 -->
-  <div class="course-block">
-    <div class="course-head" onclick="toggleCourse(this)">
-      <span class="course-badge" style="background:var(--woori-bg);color:var(--woori);">우리동생</span>
-      <span class="course-name">반려동물통합돌봄활동가과정</span>
-      <span class="course-meta">15명 · 일정 조율 중 · 대관 · 담당: 구민희 010-7689-0747</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="course-body">
-      <table class="session-table">
-        <thead><tr><th style="width:7%">회차</th><th style="width:35%">강의주제</th><th>주요 내용</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>1강</td>
-            <td>[철학과 인식] 동물복지, 내 집 거실에서 마을로 확장하기</td>
-            <td>생명 존중 기반 동물복지 철학 / 반려동물 문제를 사회적 구조로 바라보기 / 지역사회 통합돌봄 체계 안에서 동물 돌봄의 공공적 가치</td>
-          </tr>
-          <tr>
-            <td>2강</td>
-            <td>[반려견의 생애] 요람에서 무덤까지, 반려견을 위한 맞춤형 돌봄</td>
-            <td>퍼피기~노령견 생애주기별 건강 지표 / 영양·위생·환경 조성 / 위기 상황 시 지역사회 개입 돌봄 포인트</td>
-          </tr>
-          <tr>
-            <td>3강</td>
-            <td>[반려묘의 생애] 영역 동물 고양이와 평화롭게 공존하는 법</td>
-            <td>수직 공간 이해 및 비뇨기 질환 예방 / 스트레스 최소화 실내 환경 조성 / 생애주기별 건강 변화와 보호자 역할</td>
-          </tr>
-          <tr>
-            <td>4강</td>
-            <td>[통합복지] 알고 쓰면 더 든든한 돌봄 자원과 마을망</td>
-            <td>지자체 지원 사업 활용법 / 취약계층 반려동물 돌봄 공백 사례 / 워크숍: 반려동물 동네 긴급 돌봄망 설계</td>
-          </tr>
-          <tr>
-            <td>5강</td>
-            <td>[실전 돌봄] 이웃의 동물을 돌보는 마음과 안전의 기술</td>
-            <td>돌봄 활동가의 전문성·책임감 / 현장 실습 및 안전 수칙 / 소통의 기술 / 실무 실습: 사료·배변·응급 매뉴얼</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 생협 대화의 식탁 과정 -->
-  <div class="course-block">
-    <div class="course-head" onclick="toggleCourse(this)">
-      <span class="course-badge" style="background:var(--saenghyup-bg);color:var(--saenghyup);">생협</span>
-      <span class="course-name">대화의 식탁 과정</span>
-      <span class="course-meta">10명 · 6/11~8/8 · 자체공간 · 담당: 손정란</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="course-body">
-      <table class="session-table">
-        <thead><tr><th style="width:7%">회차</th><th style="width:16%">일자</th><th style="width:45%">강의주제</th><th>강사</th></tr></thead>
-        <tbody>
-          <tr><td>1강</td><td>6/11 (목)</td><td>대화의 식탁. 커뮤니티와 대화</td><td>양원석</td></tr>
-          <tr><td>2강</td><td>6/25 (목)</td><td>실제</td><td>신은희 (밸류식탁)</td></tr>
-          <tr><td>3강</td><td>7/9 (목)</td><td>함께 준비 간단한 식사+대화</td><td>—</td></tr>
-          <tr><td>4강</td><td>7/23 (목)</td><td>대화의 주제(건강, 식문화 연결) + 활용</td><td>—</td></tr>
-          <tr><td>5강</td><td>8/8 (목)</td><td>기획안 작성</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <div class="right-panel" id="right-panel"></div>
 
 </div>
 
 <script>
-const COLORS = {
-  ulim:      { bg:'#E1F5EE', tc:'#085041', border:'#0F6E56' },
-  sabujak:   { bg:'#EEEDFE', tc:'#3C3489', border:'#534AB7' },
-  woori:     { bg:'#FAEEDA', tc:'#633806', border:'#854F0B' },
-  saenghyup: { bg:'#EAF3DE', tc:'#27500A', border:'#3B6D11' },
-  common:    { bg:'#E6F1FB', tc:'#0C447C', border:'#185FA5' },
+const COL = {
+  ulim:      {bg:'#E1F5EE',tc:'#085041',bd:'#5DCAA5'},
+  sabujak:   {bg:'#EEEDFE',tc:'#3C3489',bd:'#AFA9EC'},
+  woori:     {bg:'#FAEEDA',tc:'#633806',bd:'#EF9F27'},
+  saenghyup: {bg:'#EAF3DE',tc:'#27500A',bd:'#97C459'},
+  common:    {bg:'#E6F1FB',tc:'#0C447C',bd:'#85B7EB'},
 };
 
-const EVENTS = [
-  { month:6, day:9,  org:'사부작', course:'길동무과정', label:'길동무 1강', key:'sabujak',
-    detail:'장애를 어떻게 볼 것인가?', sub:'강사: 연두(이남실) / 14:00~16:00 / 대관' },
-  { month:6, day:10, org:'사부작', course:'길동무과정', label:'길동무 2강', key:'sabujak',
-    detail:'사부작 이야기', sub:'강사: 소피아(최경화) / 14:00~16:00 / 대관' },
-  { month:6, day:11, org:'생협', course:'대화의 식탁 과정', label:'대화의 식탁 1강', key:'saenghyup',
-    detail:'대화의 식탁. 커뮤니티와 대화', sub:'강사: 양원석 / 담당: 손정란 / 자체공간' },
-  { month:6, day:16, org:'사부작', course:'길동무과정', label:'길동무 3강', key:'sabujak',
-    detail:'마을의 길동무들 그리고 "나도 길동무가 되고 싶다."', sub:'강사: 꽃다지(조승연) / 14:00~16:00 / 대관' },
-  { month:6, day:17, org:'사부작', course:'길동무과정', label:'길동무 4강', key:'sabujak',
-    detail:"길동무들과 함께 '어른이 되면'", sub:'강사: 장혜정, 장혜영 / 14:00~16:00 / 대관' },
-  { month:6, day:25, org:'사부작', course:'길동무과정', label:'길동무 5강', key:'sabujak',
-    detail:'훌라 워크숍 그리고 소감 나누기', sub:'강사: 선샤인아놀드훌라 / 14:00~16:00 / 대관' },
-  { month:6, day:25, org:'생협', course:'대화의 식탁 과정', label:'대화의 식탁 2강', key:'saenghyup',
-    detail:'실제', sub:'강사: 신은희(밸류식탁) / 자체공간' },
-  { month:7, day:7,  org:'울림', course:'단기돌봄과정', label:'단기돌봄 1일차', key:'ulim',
-    detail:'돌봄상황적 실전교육 · 돌봄SOS 좋은사례 · 돌봄기준 및 업무메뉴얼 · 응급상황대처 · 돌봄 실전', sub:'13:30~17:20 / 담당: 강경미 / 자체공간' },
-  { month:7, day:9,  org:'울림', course:'홈케어과정', label:'홈케어 1회차', key:'ulim',
-    detail:'홈케어과정 1회차', sub:'담당: 오성화 010-5202-6908 / 자체공간' },
-  { month:7, day:9,  org:'생협', course:'대화의 식탁 과정', label:'대화의 식탁 3강', key:'saenghyup',
-    detail:'함께 준비 간단한 식사+대화', sub:'자체공간' },
-  { month:7, day:14, org:'울림', course:'단기돌봄과정', label:'단기돌봄 2일차', key:'ulim',
-    detail:'돌봄의 태도와 기술 1·2 · 제도에 대한 이해 · 사전돌봄의향서 워크숍', sub:'13:30~17:20 / 담당: 강경미 / 자체공간' },
-  { month:7, day:16, org:'울림', course:'홈케어과정', label:'홈케어 2회차', key:'ulim',
-    detail:'홈케어과정 2회차', sub:'담당: 오성화 / 자체공간' },
-  { month:7, day:23, org:'울림', course:'홈케어과정', label:'홈케어 3회차', key:'ulim',
-    detail:'홈케어과정 3회차', sub:'담당: 오성화 / 자체공간' },
-  { month:7, day:23, org:'생협', course:'대화의 식탁 과정', label:'대화의 식탁 4강', key:'saenghyup',
-    detail:'대화의 주제(건강, 식문화 연결) + 활용', sub:'자체공간' },
-  { month:7, day:1,  org:'공통', course:'사전돌봄의향서', label:'공통과정 (7월 중)', key:'common',
-    detail:'사전돌봄의향서', sub:'강사: 이경란, 박은주 / 정원 60명 / 대관' },
-  { month:8, day:8,  org:'생협', course:'대화의 식탁 과정', label:'대화의 식탁 5강', key:'saenghyup',
-    detail:'기획안 작성', sub:'자체공간' },
+const WD = ['일','월','화','수','목','금','토'];
+
+const COURSES = [
+  {
+    key:'common', org:'공통', name:'사전돌봄의향서',
+    meta:{정원:'60명',일정:'7월 중',장소:'대관',담당:'—'},
+    sessions:[
+      {label:'—',date:'7월 중',time:'—',subject:'사전돌봄의향서',sub:'',instructor:'이경란, 박은주'},
+    ]
+  },
+  {
+    key:'ulim', org:'울림', name:'단기돌봄과정',
+    meta:{정원:'13명',일정:'7/7, 7/14 (화)',장소:'자체공간',담당:'강경미 010-7235-8535'},
+    sessions:[
+      {label:'1일차',date:'7/7 (화)', time:'13:30~14:20',subject:'돌봄상황적 실전교육',sub:'거동불편, 초기치매, 영양, 신체위생, 환경위생',instructor:'강경미'},
+      {label:'',     date:'7/7 (화)', time:'14:30~15:20',subject:'돌봄SOS 좋은사례',sub:'일상회복, 돌봄SOS 지속이용, 장기요양, 중장년사례',instructor:'오성화'},
+      {label:'',     date:'7/7 (화)', time:'15:30~16:00',subject:'돌봄기준 및 업무메뉴얼',sub:'울림케어 기준, 울림케어메뉴얼',instructor:'강경미'},
+      {label:'',     date:'7/7 (화)', time:'16:10~16:40',subject:'응급상황대처, 성폭력예방 교육',sub:'',instructor:'박지연'},
+      {label:'',     date:'7/7 (화)', time:'16:50~17:20',subject:'돌봄 실전',sub:'관찰/공간·복지용구/기록지 작성법/앱사용법/케어매니저와의 소통',instructor:'천은화'},
+      {label:'2일차',date:'7/14 (화)',time:'13:30~14:20',subject:'돌봄의 태도와 기술 1',sub:'소통, 대화법',instructor:'고은주'},
+      {label:'',     date:'7/14 (화)',time:'14:20~14:50',subject:'돌봄의 태도와 기술 2',sub:'요양보호사 사례',instructor:'요양보호사'},
+      {label:'',     date:'7/14 (화)',time:'16:00~16:30',subject:'제도에 대한 이해',sub:'',instructor:'박지연'},
+      {label:'',     date:'7/14 (화)',time:'16:40~17:20',subject:'사전돌봄의향서 워크숍',sub:'',instructor:'이경란'},
+    ]
+  },
+  {
+    key:'ulim', org:'울림', name:'홈케어과정',
+    meta:{정원:'12명',일정:'7/9, 7/16, 7/23 (목)',장소:'자체공간',담당:'오성화 010-5202-6908'},
+    sessions:[
+      {label:'1회차',date:'7/9 (목)', time:'—',subject:'세부 강의내용 미정',sub:'',instructor:'오성화'},
+      {label:'2회차',date:'7/16 (목)',time:'—',subject:'세부 강의내용 미정',sub:'',instructor:'오성화'},
+      {label:'3회차',date:'7/23 (목)',time:'—',subject:'세부 강의내용 미정',sub:'',instructor:'오성화'},
+    ]
+  },
+  {
+    key:'sabujak', org:'사부작', name:'길동무과정',
+    meta:{정원:'10명',일정:'6/9~6/25',장소:'대관',담당:'최경화 010-5226-6430'},
+    sessions:[
+      {label:'1강',date:'6/9 (화)', time:'14:00~16:00',subject:'"장애를 어떻게 볼 것인가?"',sub:'비발달장애인·발달장애인 주민이 서로를 감각하고 관계 맺기',instructor:'연두(이남실)'},
+      {label:'2강',date:'6/10 (수)',time:'14:00~16:00',subject:'사부작 이야기',sub:"발달장애 청년들과 마을을 연결하는 허브 '사부작' 소개",instructor:'소피아(최경화)'},
+      {label:'3강',date:'6/16 (화)',time:'14:00~16:00',subject:'마을의 길동무들 그리고 "나도 길동무가 되고 싶다."',sub:'사부작청년들과 길동무가 만들어가는 마을 돌봄 생태계',instructor:'꽃다지(조승연)'},
+      {label:'4강',date:'6/17 (수)',time:'14:00~16:00',subject:"길동무들과 함께 '어른이 되면'",sub:'동생의 탈시설 후 사부작청년과 길동무가 된 혜정·혜영 이야기',instructor:'장혜정, 장혜영'},
+      {label:'5강',date:'6/25 (목)',time:'14:00~16:00',subject:'훌라 워크숍 그리고 소감 나누기',sub:'사부작청년·길동무 함께하는 훌라 워크숍 / "나는 어떤 길동무가 될 수 있을까?" 회고',instructor:'선샤인아놀드훌라'},
+    ]
+  },
+  {
+    key:'woori', org:'우리동생', name:'반려동물통합돌봄활동가과정',
+    meta:{정원:'15명',일정:'일정 조율 중',장소:'대관',담당:'구민희 010-7689-0747'},
+    sessions:[
+      {label:'1강',date:'미정',time:'—',subject:'[철학과 인식] 동물복지, 내 집 거실에서 마을로 확장하기',sub:'생명 존중 기반 동물복지 철학 / 반려동물 문제를 사회적 구조로 바라보기 / 지역사회 통합돌봄 체계 안에서 동물 돌봄의 공공적 가치',instructor:'—'},
+      {label:'2강',date:'미정',time:'—',subject:'[반려견의 생애] 요람에서 무덤까지, 반려견을 위한 맞춤형 돌봄',sub:'퍼피기~노령견 생애주기별 건강 지표 / 영양·위생·환경 조성 / 위기 상황 시 지역사회 개입 돌봄 포인트',instructor:'—'},
+      {label:'3강',date:'미정',time:'—',subject:'[반려묘의 생애] 영역 동물 고양이와 평화롭게 공존하는 법',sub:'수직 공간 이해 및 비뇨기 질환 예방 / 스트레스 최소화 실내 환경 조성 / 생애주기별 건강 변화와 보호자 역할',instructor:'—'},
+      {label:'4강',date:'미정',time:'—',subject:'[통합복지] 알고 쓰면 더 든든한 돌봄 자원과 마을망',sub:'지자체 지원 사업 활용법 / 취약계층 반려동물 돌봄 공백 사례 / 워크숍: 반려동물 동네 긴급 돌봄망 설계',instructor:'—'},
+      {label:'5강',date:'미정',time:'—',subject:'[실전 돌봄] 이웃의 동물을 돌보는 마음과 안전의 기술',sub:'돌봄 활동가의 전문성·책임감 / 현장 실습 및 안전 수칙 / 소통의 기술 / 실무 실습: 사료·배변·응급 매뉴얼',instructor:'—'},
+    ]
+  },
+  {
+    key:'saenghyup', org:'생협', name:'대화의 식탁 과정',
+    meta:{정원:'10명',일정:'6/11~8/8',장소:'자체공간',담당:'손정란'},
+    sessions:[
+      {label:'1강',date:'6/11 (목)',time:'—',subject:'대화의 식탁. 커뮤니티와 대화',sub:'',instructor:'양원석'},
+      {label:'2강',date:'6/25 (목)',time:'—',subject:'실제',sub:'',instructor:'신은희 (밸류식탁)'},
+      {label:'3강',date:'7/9 (목)', time:'—',subject:'함께 준비 간단한 식사+대화',sub:'',instructor:'—'},
+      {label:'4강',date:'7/23 (목)',time:'—',subject:'대화의 주제(건강, 식문화 연결) + 활용',sub:'',instructor:'—'},
+      {label:'5강',date:'8/8 (목)', time:'—',subject:'기획안 작성',sub:'',instructor:'—'},
+    ]
+  },
 ];
 
-function getDays(y, m) { return new Date(y, m, 0).getDate(); }
-function getFirst(y, m) { return new Date(y, m - 1, 1).getDay(); }
+const EVENTS = [
+  {month:6,day:9,  ci:3,si:0,label:'길동무 1강'},
+  {month:6,day:10, ci:3,si:1,label:'길동무 2강'},
+  {month:6,day:11, ci:5,si:0,label:'대화의 식탁 1강'},
+  {month:6,day:16, ci:3,si:2,label:'길동무 3강'},
+  {month:6,day:17, ci:3,si:3,label:'길동무 4강'},
+  {month:6,day:25, ci:3,si:4,label:'길동무 5강'},
+  {month:6,day:25, ci:5,si:1,label:'대화의 식탁 2강'},
+  {month:7,day:1,  ci:0,si:0,label:'공통과정 (7월 중)'},
+  {month:7,day:7,  ci:1,si:0,label:'단기돌봄 1일차'},
+  {month:7,day:9,  ci:2,si:0,label:'홈케어 1회차'},
+  {month:7,day:9,  ci:5,si:2,label:'대화의 식탁 3강'},
+  {month:7,day:14, ci:1,si:5,label:'단기돌봄 2일차'},
+  {month:7,day:16, ci:2,si:1,label:'홈케어 2회차'},
+  {month:7,day:23, ci:2,si:2,label:'홈케어 3회차'},
+  {month:7,day:23, ci:5,si:3,label:'대화의 식탁 4강'},
+  {month:8,day:8,  ci:5,si:4,label:'대화의 식탁 5강'},
+];
 
-function showMonth(m, btn) {
-  document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
+let selectedChip = null;
+
+function mk(tag, cls){ const e=document.createElement(tag); if(cls) e.className=cls; return e; }
+function getDays(y,m){ return new Date(y,m,0).getDate(); }
+function getFirst(y,m){ return new Date(y,m-1,1).getDay(); }
+
+function showMonth(m, btn){
+  document.querySelectorAll('.month-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderCal(m);
 }
 
-function renderCal(month) {
-  const y = 2025;
-  const total = getDays(y, month);
-  const first = getFirst(y, month);
-  const prevTotal = getDays(y, month - 1);
-  const body = document.getElementById('cal-body');
-  body.innerHTML = '';
+function renderCal(month){
+  const y=2025, total=getDays(y,month), first=getFirst(y,month), prevTotal=getDays(y,month-1);
+  const body=document.getElementById('cal-body');
+  body.innerHTML='';
 
-  for (let i = 0; i < first; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cal-cell other';
-    const dn = document.createElement('div');
-    dn.className = 'day-num other';
-    dn.textContent = prevTotal - first + 1 + i;
-    cell.appendChild(dn);
-    body.appendChild(cell);
+  for(let i=0;i<first;i++){
+    const cell=mk('div','cal-cell other');
+    const dn=mk('div','day-num other'); dn.textContent=prevTotal-first+1+i;
+    cell.appendChild(dn); body.appendChild(cell);
   }
 
-  for (let d = 1; d <= total; d++) {
-    const dow = (first + d - 1) % 7;
-    const cell = document.createElement('div');
-    cell.className = 'cal-cell';
-    const dn = document.createElement('div');
-    dn.className = 'day-num' + (dow === 0 ? ' sun' : dow === 6 ? ' sat' : '');
-    dn.textContent = d;
-    cell.appendChild(dn);
+  for(let d=1;d<=total;d++){
+    const dow=(first+d-1)%7;
+    const cell=mk('div','cal-cell');
+    const dn=mk('div','day-num'+(dow===0?' sun':dow===6?' sat':''));
+    dn.textContent=d; cell.appendChild(dn);
 
-    EVENTS.filter(e => e.month === month && e.day === d).forEach(ev => {
-      const c = COLORS[ev.key];
-      const btn = document.createElement('button');
-      btn.className = 'event';
-      btn.style.cssText = `background:${c.bg};color:${c.tc};border:0.5px solid ${c.border}44;`;
-      btn.textContent = ev.label;
-      btn.onclick = () => showTooltip(month, d, ev, c);
-      cell.appendChild(btn);
+    EVENTS.filter(e=>e.month===month&&e.day===d).forEach(ev=>{
+      const co=COURSES[ev.ci], col=COL[co.key];
+      const chip=document.createElement('button');
+      chip.className='ev-chip';
+      chip.style.cssText=`background:${col.bg};color:${col.tc};border:0.5px solid ${col.bd}66;`;
+      chip.textContent=ev.label;
+      chip.onclick=()=>selectEvent(ev, month, d, chip);
+      cell.appendChild(chip);
     });
 
     body.appendChild(cell);
   }
 
-  const used = first + total;
-  const remain = (7 - (used % 7)) % 7;
-  for (let i = 1; i <= remain; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cal-cell other';
-    const dn = document.createElement('div');
-    dn.className = 'day-num other';
-    dn.textContent = i;
-    cell.appendChild(dn);
-    body.appendChild(cell);
+  const used=first+total, remain=(7-(used%7))%7;
+  for(let i=1;i<=remain;i++){
+    const cell=mk('div','cal-cell other');
+    const dn=mk('div','day-num other'); dn.textContent=i;
+    cell.appendChild(dn); body.appendChild(cell);
   }
-
-  document.getElementById('tooltip').innerHTML = '<div class="tooltip-hint">일정을 클릭하면 상세 내용이 표시됩니다.</div>';
 }
 
-function showTooltip(month, day, ev, c) {
-  const WEEKDAYS = ['일','월','화','수','목','금','토'];
-  const dow = WEEKDAYS[new Date(2025, month - 1, day).getDay()];
-  document.getElementById('tooltip').innerHTML = `
-    <div class="tooltip-date">${month}월 ${day}일 (${dow})</div>
-    <div class="tooltip-title" style="color:${c.tc};">[${ev.org} · ${ev.course}] ${ev.detail}</div>
-    <div class="tooltip-rows">
-      <div class="tooltip-row">${ev.sub.replace(/\//g, ' &nbsp;/&nbsp; ')}</div>
+function selectEvent(ev, month, day, chip){
+  if(selectedChip) selectedChip.classList.remove('selected');
+  selectedChip=chip; chip.classList.add('selected');
+  const co=COURSES[ev.ci], col=COL[co.key];
+  const dow=WD[new Date(2025,month-1,day).getDay()];
+  renderDetail(co, col, ev.si, `${month}월 ${day}일 (${dow})`);
+}
+
+function renderDetail(co, col, activeIdx, dateStr){
+  const rp=document.getElementById('right-panel');
+
+  let sessionsHTML='';
+  let prevDate='';
+  co.sessions.forEach((s,i)=>{
+    const isActive=(i===activeIdx);
+    if(s.date!==prevDate && s.label){
+      if(i>0) sessionsHTML+=`<div class="date-divider">${s.date}</div>`;
+      prevDate=s.date;
+    }
+    sessionsHTML+=`
+    <div class="session-item${isActive?' active-session':''}"
+         style="${isActive?`border-color:${col.bd};background:${col.bg}30;`:''}">
+      <div class="session-row1">
+        ${s.label?`<span class="session-num" style="background:${col.bg};color:${col.tc};">${s.label}</span>`:''}
+        ${!s.label&&s.date?`<span class="session-date">${s.date}</span>`:''}
+        ${s.time!=='—'?`<span class="session-time">${s.time}</span>`:''}
+      </div>
+      <div class="session-subject">${s.subject}</div>
+      ${s.sub?`<div class="session-sub">${s.sub}</div>`:''}
+      ${s.instructor&&s.instructor!=='—'?`<div class="session-instructor">강사: ${s.instructor}</div>`:''}
     </div>`;
+  });
+
+  rp.innerHTML=`
+    <button class="back-btn" onclick="renderAllCourses()">← 전체 과정 목록</button>
+    <div class="panel-inner">
+      <div class="panel-date-tag">${dateStr}</div>
+      <span class="panel-org-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
+      <div class="panel-course-label">과정명</div>
+      <div class="panel-title">${co.name}</div>
+      <div class="panel-meta-list">
+        ${Object.entries(co.meta).map(([k,v])=>`
+          <div class="panel-meta-row">
+            <span class="panel-meta-key">${k}</span>
+            <span class="panel-meta-val">${v}</span>
+          </div>`).join('')}
+      </div>
+      <div class="section-title">전체 커리큘럼</div>
+      <div class="session-list">${sessionsHTML}</div>
+    </div>`;
+
+  setTimeout(()=>{
+    const active=rp.querySelector('.active-session');
+    if(active) active.scrollIntoView({behavior:'smooth',block:'nearest'});
+  },50);
 }
 
-function toggleCourse(head) {
-  const body = head.nextElementSibling;
-  const chevron = head.querySelector('.chevron');
-  const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px';
-  if (isOpen) {
-    body.style.maxHeight = '0px';
-    chevron.style.transform = 'rotate(0deg)';
-  } else {
-    body.style.maxHeight = body.scrollHeight + 'px';
-    chevron.style.transform = 'rotate(180deg)';
-  }
+function renderAllCourses(){
+  if(selectedChip){ selectedChip.classList.remove('selected'); selectedChip=null; }
+  const rp=document.getElementById('right-panel');
+
+  rp.innerHTML=`<div class="all-courses">
+    <div class="all-courses-title">전체 과정 목록</div>
+    ${COURSES.map((co,i)=>{
+      const col=COL[co.key];
+      return `<div class="course-card" onclick="openCourse(${i})">
+        <div class="course-card-top">
+          <span class="course-card-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
+          <span class="course-card-name">${co.name}</span>
+        </div>
+        <div class="course-card-meta">${co.meta['정원']} · ${co.meta['일정']} · ${co.meta['장소']}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
 }
 
-document.querySelectorAll('.course-body').forEach(b => {
-  b.style.maxHeight = b.scrollHeight + 'px';
-});
+function openCourse(idx){
+  const co=COURSES[idx], col=COL[co.key];
+  renderDetail(co, col, -1, '과정 전체 일정');
+}
 
 renderCal(6);
+renderAllCourses();
 </script>
 </body>
 </html>
