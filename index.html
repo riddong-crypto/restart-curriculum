@@ -4,10 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마포 돌봄 캠퍼스</title>
+<link id="favicon" rel="icon" type="image/png">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
 
 :root {
+  --brand:        #1A6E5C;
+  --brand-light:  #E6F4F1;
+  --brand-dark:   #0F4A3D;
+
   --ulim:         #0F6E56; --ulim-bg:   #E1F5EE; --ulim-bd:   #5DCAA5;
   --sabujak:      #3C3489; --sabujak-bg:#EEEDFE; --sabujak-bd:#AFA9EC;
   --woori:        #633806; --woori-bg:  #FAEEDA; --woori-bd:  #EF9F27;
@@ -32,37 +37,69 @@ body {
   min-height: 100vh;
 }
 
+/* 히어로 상단바 */
 .top-bar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 13px 22px;
+  background: var(--brand-dark);
+  border-bottom: none;
+  padding: 0 28px;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: stretch;
+  gap: 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  min-height: 56px;
 }
 
-.top-bar h1 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
-.top-bar p  { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+.top-bar-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 0;
+  flex: 1;
+  min-width: 0;
+}
 
-.top-nav { display: flex; gap: 4px; flex: 1; margin-left: 14px; }
-.top-nav-btn {
-  padding: 5px 13px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--white);
+.top-bar h1 {
+  font-size: 1.0rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.top-bar-sub {
   font-size: 0.72rem;
+  color: rgba(255,255,255,0.65);
+  margin-top: 2px;
+  letter-spacing: 0.01em;
+}
+
+.top-nav {
+  display: flex;
+  gap: 0;
+  margin-left: 20px;
+  align-items: center;
+}
+
+.top-nav-btn {
+  padding: 6px 16px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  font-size: 0.78rem;
   font-family: inherit;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  color: var(--muted);
+  color: rgba(255,255,255,0.65);
   transition: all 0.15s;
   white-space: nowrap;
+  height: 100%;
+  letter-spacing: -0.01em;
 }
-.top-nav-btn:hover { background: #f0f0ec; color: var(--text); }
-.top-nav-btn.active { background: var(--text); color: var(--white); border-color: var(--text); }
+.top-nav-btn:hover { color: #ffffff; background: rgba(255,255,255,0.07); }
+.top-nav-btn.active { color: #ffffff; border-bottom-color: #5DCAA5; }
 
 /* 기관 소개 페이지 */
 #page-orgs { display: none; padding: 24px 28px; max-width: 900px; margin: 0 auto; }
@@ -173,14 +210,68 @@ body {
 
 .layout {
   display: flex;
-  height: calc(100vh - 49px);
+  height: calc(100vh - 56px);
+  min-height: 0;
 }
 
-/* 왼쪽 캘린더 */
+/* ── 인쇄 스타일 ── */
+@media print {
+  .top-nav, .month-nav, .legend, .back-btn, .apply-btn,
+  .org-detail-overlay, #page-orgs, .cal-hint { display: none !important; }
+  .layout { height: auto; flex-direction: column; }
+  .right-panel { width: 100%; border-top: 1px solid #ccc; }
+  .top-bar { background: #fff !important; color: #000 !important; position: static; }
+  .top-bar h1 { color: #000 !important; }
+  .top-bar-sub { color: #555 !important; }
+  body { background: #fff; }
+}
+
+/* ── 아이패드 가로 (1024px 이하) ── */
+@media (max-width: 1024px) {
+  .right-panel { width: 320px; }
+  .left-panel { padding: 14px 12px 40px; }
+  .cal-cell { min-height: 72px; }
+}
+
+/* ── 아이패드 세로 (834px 이하) ── */
+@media (max-width: 834px) {
+  .layout { flex-direction: column; height: auto; min-height: calc(100vh - 56px); }
+  .left-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 12px 20px;
+  }
+  .right-panel { width: 100%; max-height: 55vh; overflow-y: auto; }
+  .orgs-grid { grid-template-columns: repeat(2, 1fr); }
+  .cal-cell { min-height: 64px; }
+}
+
+/* ── 스마트폰 (680px 이하) ── */
+@media (max-width: 680px) {
+  .layout { flex-direction: column; height: auto; }
+  .left-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 12px 20px;
+  }
+  .right-panel { width: 100%; max-height: 60vh; overflow-y: auto; }
+  .cal-cell { min-height: 56px; }
+  .orgs-grid { grid-template-columns: 1fr; }
+  .org-detail-overlay { padding: 12px; }
+  .course-card-meta { white-space: normal; line-height: 1.6; }
+
+  .top-bar { flex-wrap: wrap; gap: 0; padding: 10px 14px 0; }
+  .top-bar-left { width: 100%; padding: 0 0 8px; }
+  .top-bar h1 { font-size: 0.88rem; }
+  .top-nav { margin-left: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.15); }
+  .top-nav-btn { flex: 1; text-align: center; font-size: 0.7rem; padding: 8px; }
+}
 .left-panel {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 18px 18px 40px;
   border-right: 1px solid var(--border);
 }
@@ -189,7 +280,9 @@ body {
 .right-panel {
   width: 420px;
   flex-shrink: 0;
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--white);
 }
 
@@ -247,8 +340,28 @@ body {
   text-align: center;
 }
 
-/* 세션 클릭 */
-.session-item { cursor: pointer; }
+/* ── 달력 안내 힌트 ── */
+.cal-hint {
+  font-size: 0.72rem;
+  color: var(--hint);
+  text-align: right;
+  padding: 0 2px 8px;
+  letter-spacing: -0.01em;
+}
+
+/* ── 과정 상태 배지 ── */
+.status-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: auto;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.status-open   { background: #DCFCE7; color: #166534; }
+.status-closed { background: #F3F4F6; color: #9CA3AF; }
 .session-item:hover:not(.active-session) { background: #eeeee9; }
 .month-nav { display: flex; gap: 5px; margin-bottom: 10px; align-items: center; }
 
@@ -394,9 +507,9 @@ body {
   border-bottom: 1px solid var(--border-light);
 }
 
-.panel-meta-row  { display: flex; gap: 8px; font-size: 0.82rem; }
-.panel-meta-key  { color: var(--hint); width: 36px; flex-shrink: 0; }
-.panel-meta-val  { color: var(--text); line-height: 1.5; }
+.panel-meta-row  { display: flex; gap: 8px; font-size: 0.82rem; align-items: flex-start; }
+.panel-meta-key  { color: var(--hint); width: 44px; flex-shrink: 0; white-space: nowrap; word-break: keep-all; }
+.panel-meta-val  { color: var(--text); line-height: 1.5; word-break: keep-all; }
 
 .section-title {
   font-size: 0.76rem;
@@ -510,6 +623,8 @@ body {
 }
 .apply-btn:hover { opacity: 0.85; transform: translateY(-1px); }
 .apply-btn:active { transform: translateY(0); }
+
+.placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -537,68 +652,320 @@ body {
   min-height: 72px;
 }
 
-/* ── 모바일 대응 ── */
-@media (max-width: 860px) {
-  .right-panel { width: 320px; }
+/* ── 인쇄 스타일 ── */
+@media print {
+  .top-nav, .month-nav, .legend, .back-btn, .apply-btn,
+  .org-detail-overlay, #page-orgs, .cal-hint { display: none !important; }
+  .layout { height: auto; flex-direction: column; }
+  .right-panel { width: 100%; border-top: 1px solid #ccc; }
+  .top-bar { background: #fff !important; color: #000 !important; position: static; }
+  .top-bar h1 { color: #000 !important; }
+  .top-bar-sub { color: #555 !important; }
+  body { background: #fff; }
 }
 
-@media (max-width: 680px) {
-  /* 상단바 */
-  .top-bar {
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 10px 14px;
-  }
-  .top-bar h1 {
-    font-size: 0.88rem;
-    width: 100%;
-  }
-  .top-nav {
-    margin-left: 0;
-    width: 100%;
-    flex: none;
-  }
-  .top-nav-btn {
-    flex: 1;
-    text-align: center;
-    font-size: 0.7rem;
-    padding: 6px 8px;
-  }
+/* ── 인트로 페이지 ── */
+#page-intro {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, #1a6e5c 0%, #2a9e7a 60%, #3dbf8a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 300;
+  padding: 48px 24px 80px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
 
-  /* 레이아웃: 세로 쌓기 */
-  .layout {
-    flex-direction: column;
-    height: auto;
-  }
-  .left-panel {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 12px 12px 24px;
-  }
-  .right-panel {
-    width: 100%;
-    max-height: 60vh;
-    overflow-y: auto;
-  }
+#page-intro.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
 
-  /* 달력 셀 높이 줄이기 */
-  .cal-cell { min-height: 60px; }
+.intro-bg-svg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
 
-  /* 기관 소개 그리드: 1열 */
-  .orgs-grid {
-    grid-template-columns: 1fr;
-  }
+.intro-inner {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+  z-index: 1;
+}
 
-  /* 모달 패딩 줄이기 */
-  .org-detail-overlay { padding: 12px; }
+.intro-hero {
+  text-align: center;
+  padding: 12px 0 8px;
+}
+
+.intro-sub {
+  font-size: 1.0rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.intro-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.intro-period {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.02em;
+}
+
+.intro-section {
+  background: rgba(255,255,255,0.93);
+  border-radius: 14px;
+  padding: 22px 24px;
+  border: none;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+}
+
+.intro-section-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--brand);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid #e8f5f0;
+  letter-spacing: -0.01em;
+}
+
+.intro-section-body {
+  font-size: 0.97rem;
+  color: #2d3748;
+  line-height: 1.85;
+  letter-spacing: -0.01em;
+}
+
+.intro-section-body strong {
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.intro-info-table {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.intro-info-row {
+  display: flex;
+  gap: 12px;
+  font-size: 0.93rem;
+  line-height: 1.65;
+}
+
+.intro-info-key {
+  color: var(--brand);
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 90px;
+  padding-top: 1px;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+.intro-info-val {
+  color: #2d3748;
+}
+
+.intro-info-note {
+  font-size: 0.72rem;
+  color: #718096;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #d0e8df;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.intro-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.intro-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 32px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255,255,255,0.93);
+  color: var(--brand-dark);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+  min-width: 150px;
+  flex: 1;
+  max-width: 220px;
+  text-decoration: none;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+}
+
+.intro-btn:hover {
+  background: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+}
+
+.intro-btn-icon  { font-size: 2rem; line-height: 1; }
+.intro-btn-label { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; color: var(--brand-dark); }
+.intro-btn-desc  { font-size: 0.78rem; color: var(--muted); }
+
+.intro-footer {
+  margin-top: 32px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 480px) {
+  .intro-title  { font-size: 2.2rem; }
+  .intro-btns   { flex-direction: column; align-items: stretch; }
+  .intro-btn    { max-width: 100%; }
 }
 </style>
 </head>
 <body>
 
+<!-- 인트로 페이지 -->
+<div id="page-intro">
+
+  <!-- 배경 일러스트 -->
+  <svg class="intro-bg-svg" viewBox="0 0 400 800" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- 왼쪽 상단 큰 잎 -->
+    <g opacity="0.18" transform="translate(-30, 20) rotate(-20)">
+      <ellipse cx="60" cy="120" rx="38" ry="80" fill="#ffffff"/>
+      <line x1="60" y1="40" x2="60" y2="200" stroke="#ffffff" stroke-width="2"/>
+      <line x1="60" y1="80" x2="30" y2="100" stroke="#ffffff" stroke-width="1.2"/>
+      <line x1="60" y1="100" x2="90" y2="120" stroke="#ffffff" stroke-width="1.2"/>
+      <line x1="60" y1="120" x2="28" y2="140" stroke="#ffffff" stroke-width="1.2"/>
+      <line x1="60" y1="140" x2="88" y2="158" stroke="#ffffff" stroke-width="1.2"/>
+      <line x1="60" y1="160" x2="35" y2="175" stroke="#ffffff" stroke-width="1.2"/>
+    </g>
+    <!-- 왼쪽 두번째 잎 -->
+    <g opacity="0.13" transform="translate(-10, 180) rotate(-35)">
+      <ellipse cx="45" cy="90" rx="26" ry="58" fill="#ffffff"/>
+      <line x1="45" y1="32" x2="45" y2="148" stroke="#ffffff" stroke-width="1.5"/>
+      <line x1="45" y1="65" x2="22" y2="82" stroke="#ffffff" stroke-width="1"/>
+      <line x1="45" y1="85" x2="68" y2="100" stroke="#ffffff" stroke-width="1"/>
+      <line x1="45" y1="105" x2="24" y2="118" stroke="#ffffff" stroke-width="1"/>
+    </g>
+    <!-- 오른쪽 상단 큰 원형 장식 -->
+    <circle cx="380" cy="60" r="90" fill="#ffffff" opacity="0.07"/>
+    <circle cx="380" cy="60" r="60" fill="#ffffff" opacity="0.06"/>
+    <!-- 오른쪽 잎 -->
+    <g opacity="0.15" transform="translate(330, 100) rotate(30)">
+      <ellipse cx="40" cy="85" rx="28" ry="62" fill="#ffffff"/>
+      <line x1="40" y1="23" x2="40" y2="147" stroke="#ffffff" stroke-width="1.5"/>
+      <line x1="40" y1="55" x2="16" y2="72" stroke="#ffffff" stroke-width="1"/>
+      <line x1="40" y1="75" x2="64" y2="90" stroke="#ffffff" stroke-width="1"/>
+      <line x1="40" y1="98" x2="18" y2="112" stroke="#ffffff" stroke-width="1"/>
+      <line x1="40" y1="118" x2="60" y2="130" stroke="#ffffff" stroke-width="1"/>
+    </g>
+    <!-- 하단 왼쪽 작은 잎들 -->
+    <g opacity="0.12" transform="translate(0, 620) rotate(-15)">
+      <ellipse cx="35" cy="70" rx="20" ry="46" fill="#ffffff"/>
+      <line x1="35" y1="24" x2="35" y2="116" stroke="#ffffff" stroke-width="1.2"/>
+      <line x1="35" y1="50" x2="16" y2="64" stroke="#ffffff" stroke-width="0.8"/>
+      <line x1="35" y1="70" x2="54" y2="82" stroke="#ffffff" stroke-width="0.8"/>
+      <line x1="35" y1="88" x2="18" y2="98" stroke="#ffffff" stroke-width="0.8"/>
+    </g>
+    <!-- 하단 오른쪽 원형 -->
+    <circle cx="400" cy="780" r="100" fill="#ffffff" opacity="0.06"/>
+    <!-- 작은 동그라미 포인트들 -->
+    <circle cx="20" cy="400" r="6" fill="#ffffff" opacity="0.15"/>
+    <circle cx="385" cy="320" r="4" fill="#ffffff" opacity="0.12"/>
+    <circle cx="30" cy="520" r="3" fill="#ffffff" opacity="0.1"/>
+  </svg>
+
+  <div class="intro-inner">
+
+    <div class="intro-hero">
+      <div class="intro-sub">&lt;돌봄을 다시 잇다&gt;</div>
+      <div class="intro-title">마포 돌봄 캠퍼스</div>
+    </div>
+
+    <div class="intro-section">
+      <div class="intro-section-title">마포 돌봄캠퍼스란</div>
+      <div class="intro-section-body">
+        마포 지역 돌봄 경력자를 찾아내, <strong>재교육 → 인턴십 → 실천단</strong>으로 이어지는 단계별 과정을 통해 협력 기반의 돌봄 커먼즈 활동가로 전환하는 <strong>현장 연계 교육과정</strong>입니다.
+      </div>
+    </div>
+
+    <div class="intro-section">
+      <div class="intro-section-title">추진 배경</div>
+      <div class="intro-section-body">
+        돌봄 활동가의 소진과 고립, 그리고 제도 중심 돌봄의 한계 속에서 지역사회 안에서 오래 지속될 수 있는 <strong>협력 기반의 돌봄 구조</strong>를 만들기 위해 시작되었습니다.
+      </div>
+    </div>
+
+    <div class="intro-section">
+      <div class="intro-section-title">사업 개요</div>
+      <div class="intro-info-table">
+        <div class="intro-info-row"><span class="intro-info-key">교육기간</span><span class="intro-info-val">2026년 6월 ~ 8월</span></div>
+        <div class="intro-info-row"><span class="intro-info-key">모집대상</span><span class="intro-info-val">돌봄 관련 자격 소지자, 돌봄 활동 경력자, 돌봄 활동 희망자</span></div>
+        <div class="intro-info-row"><span class="intro-info-key" style="width:88px;white-space:normal;line-height:1.4;">함께하는 곳들</span><span class="intro-info-val">울림두레돌봄사회적협동조합, 마포의료복지사회적협동조합, 우리동물병원생명사회적협동조합, 발달장애청년허브사부작사회적협동조합, 울림두레소비자생활협동조합, 마포구사회적경제통합지원센터</span></div>
+      </div>
+    </div>
+
+    <div class="intro-btns">
+      <button class="intro-btn" onclick="goFromIntro('schedule')">
+        <span class="intro-btn-icon">📅</span>
+        <span class="intro-btn-label">교육일정 보기</span>
+      </button>
+      <button class="intro-btn" onclick="goFromIntro('orgs')">
+        <span class="intro-btn-icon">🏢</span>
+        <span class="intro-btn-label">교육 운영 기관 안내</span>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="intro-footer">
+    <a href="https://maposehub.org/" target="_blank" rel="noopener" id="intro-logo-link">
+      <img id="intro-logo-img" alt="마포구사회적경제통합지원센터" style="height:48px;width:auto;opacity:0.9;display:block;margin:0 auto;">
+    </a>
+  </div>
+</div>
+
 <div class="top-bar">
-  <h1>돌봄을 다시 잇다 &lt;마포 돌봄 캠퍼스&gt;</h1>
+  <div class="top-bar-left">
+    <h1>돌봄을 다시 잇다 &lt;마포 돌봄 캠퍼스&gt;</h1>
+    <div class="top-bar-sub">마포구사회적경제통합지원센터 · 2026년 6–8월 · 지역돌봄활동가 교육과정</div>
+  </div>
   <nav class="top-nav">
+    <button class="top-nav-btn" id="nav-home" onclick="goHome()">🏠 홈</button>
     <button class="top-nav-btn active" id="nav-schedule" onclick="switchPage('schedule', this)">📅 교육일정</button>
     <button class="top-nav-btn" id="nav-orgs" onclick="switchPage('orgs', this)">🏢 기관 소개</button>
   </nav>
@@ -609,7 +976,8 @@ body {
   <div class="left-panel">
     <div class="legend">
       <button class="legend-item active" id="cat-all" onclick="showAll(this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
-      <button class="legend-item" id="cat-ulim"      onclick="filterCourse('ulim',this)"     style=""><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 성인단기돌봄 / 홈케어</button>
+      <button class="legend-item" id="cat-ulim1"     onclick="filterCourse('ulim1',this)"    style=""><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 성인(노인)단기돌봄</button>
+      <button class="legend-item" id="cat-ulim2"     onclick="filterCourse('ulim2',this)"    style=""><div class="legend-dot" style="background:#dff0e8;border:1px solid #3dab85;"></div>울림두레돌봄사협 — 홈케어(정리/청소)</button>
       <button class="legend-item" id="cat-sabujak"   onclick="filterCourse('sabujak',this)"  style=""><div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak-bd);"></div>사부작 — 길동무과정</button>
       <button class="legend-item" id="cat-woori"     onclick="filterCourse('woori',this)"    style=""><div class="legend-dot" style="background:var(--woori-bg);border:1px solid var(--woori-bd);"></div>우리동물병원생명사협 — 반려동물통합돌봄</button>
       <button class="legend-item" id="cat-saenghyup" onclick="filterCourse('saenghyup',this)" style=""><div class="legend-dot" style="background:var(--saenghyup-bg);border:1px solid var(--saenghyup-bd);"></div>울림두레소비자생협 — 커뮤니티 밥상 기획</button>
@@ -622,8 +990,10 @@ body {
       <button class="month-btn active" onclick="showMonth(6,this)">6월</button>
       <button class="month-btn" onclick="showMonth(7,this)">7월</button>
       <button class="month-btn" onclick="showMonth(8,this)">8월</button>
+      <button class="month-btn" onclick="window.print()" style="margin-left:auto;" title="인쇄">🖨️ 인쇄</button>
     </div>
 
+    <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
     <div class="cal-wrap">
       <div class="cal-head-row">
         <div class="cal-head-cell sun">일</div>
@@ -655,6 +1025,8 @@ body {
 const COL = {
   center:    {bg:'#F0F0EB',tc:'#3D3D3D',bd:'#AAAAAA'},
   ulim:      {bg:'#E1F5EE',tc:'#085041',bd:'#5DCAA5'},
+  ulim1:     {bg:'#E1F5EE',tc:'#085041',bd:'#5DCAA5'},
+  ulim2:     {bg:'#dff0e8',tc:'#085041',bd:'#3dab85'},
   sabujak:   {bg:'#EEEDFE',tc:'#3C3489',bd:'#AFA9EC'},
   woori:     {bg:'#FAEEDA',tc:'#633806',bd:'#EF9F27'},
   saenghyup: {bg:'#EAF3DE',tc:'#27500A',bd:'#97C459'},
@@ -664,60 +1036,66 @@ const COL = {
 
 const WD = ['일','월','화','수','목','금','토'];
 
+const CONTACT = {
+  tel:  '02-3141-0464',
+  mobile: '010-6736-0464',
+  org: '울림두레돌봄사회적협동조합',
+};
+
 const COURSES = [
   {
     key:'common', org:'공통', name:'사전돌봄의향서',
     desc:'',
-    meta:{정원:'60명',일정:'7월 중',장소:'대관'},
+    meta:{정원:'60명',일정:'7월 중',장소:'대관',비고:'본 교육과정은 사회복지공동모금회 사랑의열매 지원사업으로 진행됩니다.'},
     sessions:[
       {label:'—',date:'7월 중',time:'—',subject:'사전돌봄의향서',sub:'',instructor:''},
     ]
   },
   {
-    key:'ulim', org:'울림두레돌봄사회적협동조합', name:'성인단기돌봄과정',
+    key:'ulim1', org:'울림두레돌봄사회적협동조합', name:'성인(노인)단기돌봄과정',
     desc:'요양보호사자격증은 있는데 돌봄활동에 경험이 없거나 자신이 없다면 성인단기돌봄교육과정을 받아보세요. 함께 해 볼만 하실거예요. 시작해보세요.',
-    meta:{정원:'15명',일정:'7/7 (화), 7/14 (화)',장소:'대관'},
+    meta:{정원:'15명',일정:'7/7 (화), 7/14 (화)',장소:'서봄하우스 함께참께',주소:'서울특별시 마포구 굴레방로3길 8 2층',비고:'본 교육과정은 사회복지공동모금회 사랑의열매 지원사업으로 진행됩니다.'},
     sessions:[
-      {label:'1일차',date:'7/7 (화)', time:'13:30~14:20',subject:'돌봄상황적 실전교육',sub:'거동불편, 초기치매, 영양, 신체위생, 환경위생',instructor:''},
+      {label:'1강',date:'7/7 (화)', time:'13:30~14:20',subject:'돌봄상황적 실전교육',sub:'거동불편, 초기치매, 영양, 신체위생, 환경위생',instructor:''},
       {label:'',     date:'7/7 (화)', time:'14:30~15:20',subject:'돌봄SOS 좋은사례 — 상태유지, 제도연계, 예방차원 사례',sub:'일상회복, 돌봄SOS 지속이용, 장기요양, 중장년사례',instructor:''},
       {label:'',     date:'7/7 (화)', time:'15:30~16:00',subject:'돌봄기준 및 업무메뉴얼',sub:'울림케어 기준, 울림케어메뉴얼',instructor:''},
       {label:'',     date:'7/7 (화)', time:'16:10~16:40',subject:'응급상황대처, 성폭력예방 교육',sub:'',instructor:''},
       {label:'',     date:'7/7 (화)', time:'16:50~17:20',subject:'돌봄 실전',sub:'관찰/공간·복지용구/기록지 작성법/앱사용법/케어매니저와의 소통',instructor:''},
-      {label:'2일차',date:'7/14 (화)',time:'13:30~14:20',subject:'돌봄의 태도와 기술 1',sub:'소통, 대화법',instructor:''},
+      {label:'2강',date:'7/14 (화)',time:'13:30~14:20',subject:'돌봄의 태도와 기술 1',sub:'소통, 대화법',instructor:''},
       {label:'',     date:'7/14 (화)',time:'14:20~14:50',subject:'돌봄의 태도와 기술 2',sub:'요양보호사 사례',instructor:''},
       {label:'',     date:'7/14 (화)',time:'16:00~16:30',subject:'제도에 대한 이해',sub:'',instructor:''},
       {label:'',     date:'7/14 (화)',time:'16:40~17:20',subject:'사전돌봄의향서 워크숍',sub:'',instructor:''},
     ]
   },
   {
-    key:'ulim', org:'울림두레돌봄사회적협동조합', name:'홈케어(정리/청소)과정',
+    key:'ulim2', org:'울림두레돌봄사회적협동조합', name:'홈케어(정리/청소)과정',
     desc:'깨끗하고 정돈된 공간은 돌봄의 질을 높입니다. 깨끗하고 정돈된 집을 만드는 방법을 함께 배워봅니다.',
-    meta:{정원:'15명',일정:'7/9 (목), 7/16 (목), 7/23 (목)',장소:'대관'},
+    meta:{정원:'15명',일정:'7/9 (목), 7/16 (목), 7/23 (목)',장소:'울림두레돌봄사협 교육실',주소:'서울특별시 마포구 성미산로 12 2층 (진호빌딩)',비고:'본 교육과정은 사회복지공동모금회 사랑의열매 지원사업으로 진행됩니다.'},
     sessions:[
-      {label:'1일차',date:'7/9 (목)', time:'10:00~12:00',subject:'돌봄환경, 공간정리의 이해',sub:'',instructor:''},
+      {label:'1강',date:'7/9 (목)', time:'10:00~12:00',subject:'돌봄환경, 공간정리의 이해',sub:'',instructor:''},
       {label:'',     date:'7/9 (목)', time:'13:00~15:00',subject:'활동사례학습 (활동가 인터뷰)',sub:'',instructor:''},
-      {label:'2일차',date:'7/16 (목)',time:'10:00~12:00',subject:'안전하고 편안한 환경을 위한 정리정돈 실전 A to Z (1)',sub:'',instructor:''},
+      {label:'2강',date:'7/16 (목)',time:'10:00~12:00',subject:'안전하고 편안한 환경을 위한 정리정돈 실전 A to Z (1)',sub:'',instructor:''},
       {label:'',     date:'7/16 (목)',time:'13:00~15:00',subject:'안전하고 편안한 환경을 위한 정리정돈 실전 A to Z (2)',sub:'',instructor:''},
-      {label:'3일차',date:'7/23 (목)',time:'10:00~12:00',subject:'친환경 청소방법에 대한 이해',sub:'',instructor:''},
+      {label:'3강',date:'7/23 (목)',time:'10:00~12:00',subject:'친환경 청소방법에 대한 이해',sub:'',instructor:''},
       {label:'',     date:'7/23 (목)',time:'13:00~15:00',subject:'사전돌봄의향서 워크숍',sub:'',instructor:''},
     ]
   },
   {
     key:'sabujak', org:'발달장애청년허브사부작 사회적협동조합', name:'길동무과정',
     desc:"지역의 발달장애 청년들과 다양한 활동으로 관계 맺는 이웃을 '길동무'라 부릅니다. 경계 없이 다정하게 청년들을 만나고 싶은 분들을 위해 '길동무 교육' 과정을 준비했습니다.",
-    meta:{정원:'10명',일정:'6/9 (화), 6/10 (수), 6/16 (화), 6/17 (수), 6/25 (목)',장소:'대관'},
+    meta:{정원:'10명',일정:'6/9 (화), 6/10 (수), 6/16 (화), 6/17 (수), 6/25 (목)',장소:'일터문화공간',주소:'서울특별시 마포구 성미산로 19, 2층',비고:'본 교육과정은 사회복지공동모금회 사랑의열매 지원사업으로 진행됩니다.'},
     sessions:[
       {label:'1강',date:'6/9 (화)', time:'14:00~16:00',subject:'"장애를 어떻게 볼 것인가?"',sub:'비발달장애인·발달장애인 주민이 서로를 감각하고 관계 맺기',instructor:''},
       {label:'2강',date:'6/10 (수)',time:'14:00~16:00',subject:'사부작 이야기',sub:"발달장애 청년들과 마을을 연결하는 허브 '사부작' 소개",instructor:''},
       {label:'3강',date:'6/16 (화)',time:'14:00~16:00',subject:'마을의 길동무들 그리고 "나도 길동무가 되고 싶다."',sub:'사부작청년들과 길동무가 만들어가는 마을 돌봄 생태계',instructor:''},
-      {label:'4강',date:'6/17 (수)',time:'17:00~19:00',subject:"길동무들과 함께 '어른이 되면'",sub:'동생의 탈시설 후 사부작청년과 길동무가 된 혜정·혜영 이야기',instructor:''},
+      {label:'4강',date:'6/17 (수)',time:'14:00~16:00',subject:"길동무들과 함께 '어른이 되면'",sub:'동생의 탈시설 후 사부작청년과 길동무가 된 혜정·혜영 이야기',instructor:''},
       {label:'5강',date:'6/25 (목)',time:'14:00~16:00',subject:'훌라 워크숍 그리고 소감 나누기',sub:'사부작청년·길동무 함께하는 훌라 워크숍 / "나는 어떤 길동무가 될 수 있을까?" 회고',instructor:''},
     ]
   },
   {
     key:'woori', org:'우리동물병원생명사회적협동조합', name:'반려동물통합돌봄과정',
     desc:'이웃의 반려동물까지 함께 살피는 반려동물 통합돌봄, 그 다정한 연결을 시작할 사람을 기다립니다.',
-    meta:{정원:'15명',일정:'6/10 (수), 6/17 (수), 6/24 (수), 7/1 (수), 7/8 (수)',장소:'대관'},
+    meta:{정원:'15명',일정:'6/10 (수), 6/17 (수), 6/24 (수), 7/1 (수), 7/8 (수)',장소:'우리동생 3층 희망제작소 교육실',주소:'서울특별시 마포구 월드컵북로 92, 3층',비고:'본 교육과정은 사회복지공동모금회 사랑의열매 지원사업으로 진행됩니다.'},
     sessions:[
       {label:'1강',date:'6/10 (수)',time:'19:00~21:00',subject:'[철학과 인식] 동물복지, 내 집 거실에서 마을로 확장하기',sub:'생명 존중 기반 동물복지 철학 / 반려동물 문제를 사회적 구조로 바라보기 / 지역사회 통합돌봄 체계 안에서 동물 돌봄의 공공적 가치',instructor:''},
       {label:'2강',date:'6/17 (수)',time:'19:00~21:00',subject:'[개와 고양이의 삶] 생애주기별 핵심 건강 및 환경 관리',sub:'개·고양이 본능적 특성 이해 / 성장기·성숙기·노령기별 관리법 / 스트레스 최소화 환경 조성',instructor:''},
@@ -729,7 +1107,7 @@ const COURSES = [
   {
     key:'saenghyup', org:'울림두레소비자생활협동조합', name:'커뮤니티 밥상 기획과정',
     desc:'함께 먹는 한끼가 가장 작은 돌봄입니다. 같이 밥을 먹고, 같이 이웃이 되어 가는, 서로의 길동무가 되는 법을 배웁니다.',
-    meta:{정원:'10명',일정:'6/11 (목), 6/25 (목), 7/9 (목), 7/23 (목), 8/6 (목)',장소:'자체공간/대관'},
+    meta:{정원:'10명',일정:'6/11 (목), 6/25 (목), 7/9 (목), 7/23 (목), 8/6 (목)',장소:'울림두레생협 성산점 꼬물이부엌',주소:'서울특별시 마포구 성미산로 27',비고:'본 교육과정은 사회복지공동모금회 사랑의열매 지원사업으로 진행됩니다.'},
     sessions:[
       {label:'1강',date:'6/11 (목)',time:'10:00~12:00',subject:'[관점] 밥상이 곧 돌봄이다',sub:'함께 먹는 행위의 돌봄적 의미 / 생협 23년 먹거리 운동과 돌봄의 연결 / 커뮤니티 밥상 사례학습(국내외)',instructor:''},
       {label:'2강',date:'6/25 (목)',time:'10:00~12:00',subject:'[생활재 이해] 우리가 먹는 것의 얼굴',sub:'생산자·산지·인증체계 살펴보기 / 친환경·로컬 생활재의 돌봄적 가치 / 대상자별(어르신/만성질환/발달장애) 식재료 선택기준',instructor:''},
@@ -741,12 +1119,12 @@ const COURSES = [
   {
     key:'mapo', org:'마포의료복지사회적협동조합', name:'노인건강돌봄지도사 자격증 과정',
     desc:'재택의료주민서포터즈 과정으로, 노인건강돌봄지도사 자격증 취득을 지원합니다. 교육 수료 후 돌봄활동 참여 시 활동비가 지급됩니다.',
-    meta:{정원:'25명',일정:'6/8~6/12 (월~금)',장소:'서교동 태복빌딩 302호 (마포구 동교로 114)',참가비:'무료 (자격증 시험 응시료 5만원 본인부담)'},
+    meta:{정원:'25명',일정:'6/8~6/12 (월~금)',장소:'서교동 태복빌딩 302호',주소:'서울특별시 마포구 동교로 114',참가비:'무료 (자격증 시험 응시료 5만원 본인부담)'},
     sessions:[
       {label:'1강',date:'6/8 (월)', time:'10:00~13:00',subject:'건강의 사회적 결정요인 / 지역사회 통합돌봄',sub:'',instructor:'박봉희 이사 — 한국의료복지사회적협동조합 연합회'},
-      {label:'2강',date:'6/9 (화)', time:'10:00~13:00',subject:'치매의 이해와 돌봄',sub:'',instructor:'조미경 강호사 — 인천평화의료복지사회적협동조합'},
+      {label:'2강',date:'6/9 (화)', time:'10:00~13:00',subject:'치매의 이해와 돌봄',sub:'',instructor:'조미경 간호사 — 인천평화의료복지사회적협동조합'},
       {label:'3강',date:'6/10 (수)',time:'10:00~13:00',subject:'노인의 특성',sub:'',instructor:'강감미 사회복지사 — 울림통합돌봄센터'},
-      {label:'4강',date:'6/10 (수)',time:'10:00~13:00',subject:'통증 관리와 근력증진',sub:'',instructor:'이종기 작업치료사 — 마포의료복지사회적협동조합'},
+      {label:'4강',date:'6/10 (수)',time:'10:00~13:00',subject:'통증 관리와 근력증진',sub:'',instructor:'이준기 작업치료사 — 마포의료복지사회적협동조합'},
       {label:'5강',date:'6/11 (목)',time:'10:00~13:00',subject:'연명의료결정제도의 이해',sub:'',instructor:'이현주 사전연명의료의향서상담사 — 마포의료복지사회적협동조합'},
       {label:'6강',date:'6/11 (목)',time:'10:00~13:00',subject:'구강건강증진과 관리',sub:'',instructor:'정민숙 치과위생사 — 마포의료복지사회적협동조합'},
       {label:'7강',date:'6/12 (금)',time:'10:00~13:00',subject:'생애말기돌봄',sub:'',instructor:'조미경 간호사 — 인천평화의료복지사회적협동조합'},
@@ -773,7 +1151,7 @@ const EVENTS = [
   // 6/16 (화)
   {month:6,day:16, ci:3,si:2,label:'길동무 3강'},                // 14:00
   // 6/17 (수)
-  {month:6,day:17, ci:3,si:3,label:'길동무 4강'},                // 17:00
+  {month:6,day:17, ci:3,si:3,label:'길동무 4강'},                // 14:00
   {month:6,day:17, ci:4,si:1,label:'반려동물 2강'},              // 19:00
   // 6/24 (수)
   {month:6,day:24, ci:4,si:2,label:'반려동물 3강'},              // 19:00
@@ -784,18 +1162,18 @@ const EVENTS = [
   {month:7,day:1,  ci:0,si:0,label:'공통과정 (7월 중)'},         // 시간미정
   {month:7,day:1,  ci:4,si:3,label:'반려동물 4강'},              // 19:00
   // 7/7 (화)
-  {month:7,day:7,  ci:1,si:0,label:'단기돌봄 1일차'},            // 13:30
+  {month:7,day:7,  ci:1,si:0,label:'단기돌봄 1강'},            // 13:30
   // 7/8 (수)
   {month:7,day:8,  ci:4,si:4,label:'반려동물 5강'},              // 19:00
   // 7/9 (목)
-  {month:7,day:9,  ci:2,si:0,label:'홈케어 1일차'},              // 10:00
+  {month:7,day:9,  ci:2,si:0,label:'홈케어 1강'},              // 10:00
   {month:7,day:9,  ci:5,si:2,label:'커뮤니티밥상 3강'},          // 10:00
   // 7/14 (화)
-  {month:7,day:14, ci:1,si:5,label:'단기돌봄 2일차'},            // 13:30
+  {month:7,day:14, ci:1,si:5,label:'단기돌봄 2강'},            // 13:30
   // 7/16 (목)
-  {month:7,day:16, ci:2,si:2,label:'홈케어 2일차'},              // 10:00
+  {month:7,day:16, ci:2,si:2,label:'홈케어 2강'},              // 10:00
   // 7/23 (목)
-  {month:7,day:23, ci:2,si:4,label:'홈케어 3일차'},              // 10:00
+  {month:7,day:23, ci:2,si:4,label:'홈케어 3강'},              // 10:00
   {month:7,day:23, ci:5,si:3,label:'커뮤니티밥상 4강'},          // 10:00
   // 8/6 (목)
   {month:8,day:6,  ci:5,si:4,label:'커뮤니티밥상 5강'},          // 10:00
@@ -807,6 +1185,8 @@ let activeFilterKey = null; // null = 전체보기
 
 const CAT_COLORS = {
   ulim:      {bg:'#0F6E56', dot:'#E1F5EE'},
+  ulim1:     {bg:'#0F6E56', dot:'#E1F5EE'},
+  ulim2:     {bg:'#0a5a45', dot:'#dff0e8'},
   sabujak:   {bg:'#3C3489', dot:'#EEEDFE'},
   woori:     {bg:'#633806', dot:'#FAEEDA'},
   saenghyup: {bg:'#27500A', dot:'#EAF3DE'},
@@ -817,6 +1197,8 @@ const CAT_COLORS = {
 // 신청 링크 — key 기준
 const APPLY_LINKS = {
   ulim:      'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
+  ulim1:     'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
+  ulim2:     'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
   sabujak:   'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
   woori:     'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
   saenghyup: 'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
@@ -1004,9 +1386,12 @@ function renderDetail(co, col, activeIdx, dateStr){
     : `<div class="panel-desc-placeholder">기관 소개글을 입력해 주세요</div>`;
 
   const applyUrl = APPLY_LINKS[co.key];
+  const statusBadge = applyUrl
+    ? `<span class="status-badge status-open" style="font-size:0.7rem;padding:3px 10px;">✅ 모집중</span>`
+    : `<span class="status-badge status-closed" style="font-size:0.7rem;padding:3px 10px;">모집예정</span>`;
   const applyHTML = applyUrl
     ? `<a class="apply-btn" href="${applyUrl}" target="_blank" rel="noopener"
-          style="background:${col.tc};color:#fff;">
+          style="background:var(--brand);color:#fff;">
          ✏️ 신청하기
        </a>`
     : '';
@@ -1014,18 +1399,28 @@ function renderDetail(co, col, activeIdx, dateStr){
   rp.innerHTML=`
     <button class="back-btn" onclick="renderAllCourses()">← 전체 과정 목록</button>
     <div class="panel-inner">
-      <div class="panel-date-tag">${dateStr}</div>
-      <span class="panel-org-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span class="panel-org-badge" style="background:${col.bg};color:${col.tc};margin:0;">${co.org}</span>
+        ${statusBadge}
+      </div>
       <div class="panel-course-label">과정명</div>
       <div class="panel-title">${co.name}</div>
       ${descHTML}
       <div class="panel-meta-list">
-        ${Object.entries(co.meta).map(([k,v])=>`
+        ${Object.entries(co.meta).filter(([k])=>k!=='비고').map(([k,v])=>`
           <div class="panel-meta-row">
-            <span class="panel-meta-key">${k}</span>
+            <span class="panel-meta-key" style="width:${k.length>=3?'52px':'44px'}">${k}</span>
             <span class="panel-meta-val">${v}</span>
           </div>`).join('')}
       </div>
+      ${co.meta['비고'] ? `<div style="font-size:0.68rem;color:var(--hint);margin-top:8px;padding:8px 10px;background:var(--bg);border-radius:6px;border:1px dashed var(--border);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">* ${co.meta['비고']}</div>` : ''}
+      ${co.key !== 'mapo' ? `
+      <div class="panel-meta-list" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-light);">
+        <div class="panel-meta-row">
+          <span class="panel-meta-key" style="width:48px;">문의</span>
+          <span class="panel-meta-val">${CONTACT.org}<br>${CONTACT.tel} &nbsp;·&nbsp; ${CONTACT.mobile}</span>
+        </div>
+      </div>` : ''}
       ${applyHTML}
       <div class="section-title" style="margin-top:16px;">전체 커리큘럼</div>
       <div class="session-list">${sessionsHTML}</div>
@@ -1043,17 +1438,20 @@ function renderAllCourses(){
   const rp=document.getElementById('right-panel');
 
   rp.innerHTML=`<div class="all-courses">
-    <div class="all-courses-title">전체 과정 목록</div>
+    <div class="all-courses-title">전체 과정 목록 <span style="font-weight:400;color:var(--hint);">(${COURSES.length}개 과정)</span></div>
     ${COURSES.map((co,i)=>{
       const col=COL[co.key];
       const applyUrl = APPLY_LINKS[co.key];
+      const statusBadge = applyUrl
+        ? `<span class="status-badge status-open">모집중</span>`
+        : `<span class="status-badge status-closed">모집예정</span>`;
       return `<div class="course-card" onclick="openCourse(${i})">
         <div class="course-card-top">
           <span class="course-card-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
-          <span class="course-card-name">${co.name}</span>
+          ${statusBadge}
         </div>
-        <div class="course-card-meta">${co.meta['정원']} · ${co.meta['일정']} · ${co.meta['장소']}</div>
-        ${applyUrl ? `<div style="margin-top:6px;font-size:0.65rem;color:${col.tc};font-weight:600;">✏️ 신청 가능</div>` : ''}
+        <div class="course-card-name" style="margin:5px 0 3px;">${co.name}</div>
+        <div class="course-card-meta">📅 ${co.meta['일정']} &nbsp;·&nbsp; 👥 ${co.meta['정원']}</div>
       </div>`;
     }).join('')}
   </div>`;
@@ -1086,8 +1484,8 @@ const ORGS = [
     key: 'ulim',
     name: '울림두레돌봄사회적협동조합',
     shortName: '울림두레돌봄사협',
-    desc: '울림두레돌봄사회적협동조합은 마포구 지역사회에서 일상적인 돌봄이 필요한 분들을 위해 단기돌봄, 홈케어(정리/청소), 이동지원 등 다양한 생활밀착형 돌봄 서비스를 제공합니다. 주민이 함께 만들어가는 협동조합 방식으로 운영되며, 돌봄 노동자의 권리와 이용자의 존엄을 함께 지켜나갑니다.',
-    info: { 설립: '사회적협동조합', 지역: '마포구', 특징: '단기돌봄 · 홈케어 · 이동지원' },
+    desc: '울림두레돌봄사회적협동조합은 노년에도 살던 곳에서 계속 살아갈 수 있도록 다양한 지역돌봄관계망을 만들고 있습니다. 돌봄은 누구나 이용자도 제공자도 될 수 있습니다. 성인단기돌봄, 홈케어(정리/청소) 과정을 통해 사람과 공간을 돌보는 생활밀착형 돌봄노하우를 습득해보세요. 교육 수료 후 맞춤형돌봄 \'생활응원\', 긴급일시돌봄 \'돌봄SOS\'를 제공하는 돌봄활동가로 만나고 싶습니다.',
+    info: { 설립: '사회적협동조합', 지역: '마포구', 특징: '단기돌봄 · 홈케어(정리/청소) · 이동지원' },
     courses: ['성인단기돌봄과정', '홈케어(정리/청소)과정'],
     link: 'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
     website: 'https://woollimcare.com/', websiteLabel: '울림두레돌봄센터',
@@ -1141,8 +1539,37 @@ const ORGS = [
     courses: [],
     link: '',
     website: 'https://maposehub.org/', websiteLabel: '마포구사회적경제통합지원센터',
+    kakao: 'https://pf.kakao.com/_xdxaxlLG', kakaoLabel: '카카오톡 친구하기',
   },
 ];
+
+/* ── 인트로 → 메인 전환 ── */
+function goFromIntro(page){
+  const intro = document.getElementById('page-intro');
+  intro.classList.add('hidden');
+  setTimeout(() => { intro.style.display = 'none'; }, 550);
+
+  if(page === 'orgs'){
+    const btn = document.getElementById('nav-orgs');
+    switchPage('orgs', btn);
+  } else {
+    document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('nav-schedule').classList.add('active');
+  }
+}
+
+/* ── 홈(인트로)으로 돌아가기 ── */
+function goHome(){
+  const intro = document.getElementById('page-intro');
+  intro.style.display = 'flex';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { intro.classList.remove('hidden'); });
+  });
+  document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
+  // 교육일정 페이지 상태로 복귀 (인트로 닫으면 뒤는 교육일정)
+  document.querySelector('.layout').style.display = '';
+  document.getElementById('page-orgs').style.display = 'none';
+}
 
 /* ── 페이지 전환 ── */
 function switchPage(page, btn){
@@ -1236,6 +1663,10 @@ function openOrgDetail(key){
     ? `<a class="org-go-schedule-btn" href="${org.website}" target="_blank" rel="noopener"
           style="background:${col.tc};margin-top:8px;text-decoration:none;">🔗 홈페이지 방문하기</a>`
     : '';
+  const kakaoBtn = org.kakao
+    ? `<a class="org-go-schedule-btn" href="${org.kakao}" target="_blank" rel="noopener"
+          style="background:#FAE100;color:#3A1D1D;margin-top:8px;text-decoration:none;">💬 카카오톡 친구하기</a>`
+    : '';
   const scheduleBtn = org.courses.length > 0
     ? `<button class="org-go-schedule-btn"
         style="background:var(--text);margin-top:8px;"
@@ -1266,6 +1697,7 @@ function openOrgDetail(key){
         ${applyBtn}
         ${scheduleBtn}
         ${websiteBtn}
+        ${kakaoBtn}
       </div>
     </div>`;
   document.getElementById('org-overlay').classList.add('open');
@@ -1306,6 +1738,11 @@ function renderOrgsFooter(){
 renderCal(6);
 renderAllCourses();
 renderLogoEl('cal-footer-logo');
+
+// 파비콘 + 인트로 로고 설정
+document.getElementById('favicon').href = LOGO_B64;
+const introLogo = document.getElementById('intro-logo-img');
+if(introLogo) introLogo.src = LOGO_B64;
 </script>
 </body>
 </html>
