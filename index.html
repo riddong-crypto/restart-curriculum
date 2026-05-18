@@ -302,6 +302,9 @@ body {
   -webkit-overflow-scrolling: touch;
   padding: 18px 18px 40px;
   border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  max-height: calc(100vh - 56px);
 }
 
 /* 오른쪽 패널 */
@@ -312,6 +315,7 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   background: var(--white);
+  height: calc(100vh - 56px);
 }
 
 /* 범례 / 카테고리 탭 */
