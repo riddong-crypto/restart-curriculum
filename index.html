@@ -35,6 +35,9 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 히어로 상단바 */
@@ -210,8 +213,9 @@ body {
 
 .layout {
   display: flex;
-  height: calc(100vh - 56px);
+  flex: 1;
   min-height: 0;
+  overflow: hidden;
 }
 
 /* ── 인쇄 스타일 ── */
@@ -235,7 +239,7 @@ body {
 
 /* ── 아이패드 세로 (834px 이하) ── */
 @media (max-width: 834px) {
-  .layout { flex-direction: column; height: auto; min-height: calc(100vh - 56px); }
+  .layout { flex-direction: column; height: auto; min-height: 0; }
   .left-panel {
     border-right: none;
     border-bottom: 1px solid var(--border);
@@ -244,6 +248,7 @@ body {
   .right-panel { width: 100%; max-height: 55vh; overflow-y: auto; }
   .orgs-grid { grid-template-columns: repeat(2, 1fr); }
   .cal-cell { min-height: 64px; }
+  .top-bar-sub { font-size: 0.62rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
 
 /* ── 스마트폰 (680px 이하) ── */
@@ -260,11 +265,34 @@ body {
   .org-detail-overlay { padding: 12px; }
   .course-card-meta { white-space: normal; line-height: 1.6; }
 
-  .top-bar { flex-wrap: wrap; gap: 0; padding: 10px 14px 0; }
-  .top-bar-left { width: 100%; padding: 0 0 8px; }
-  .top-bar h1 { font-size: 0.88rem; }
-  .top-nav { margin-left: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.15); }
-  .top-nav-btn { flex: 1; text-align: center; font-size: 0.7rem; padding: 8px; }
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 12px 0;
+    gap: 0;
+  }
+  .top-bar-left {
+    padding: 0 0 6px;
+  }
+  .top-bar h1 {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .top-bar-sub { display: none; }
+  .top-nav {
+    margin-left: 0;
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+  .top-nav-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 8px 4px;
+    white-space: nowrap;
+  }
 }
 .left-panel {
   flex: 1;
@@ -362,6 +390,7 @@ body {
 }
 .status-open   { background: #DCFCE7; color: #166534; }
 .status-closed { background: #F3F4F6; color: #9CA3AF; }
+.status-done   { background: #FEE2E2; color: #991B1B; }
 .session-item:hover:not(.active-session) { background: #eeeee9; }
 .month-nav { display: flex; gap: 5px; margin-bottom: 10px; align-items: center; }
 
@@ -676,17 +705,16 @@ body {
   -webkit-overflow-scrolling: touch;
   z-index: 300;
   padding: 48px 24px 80px;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.4s ease;
 }
 
 #page-intro.hidden {
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-10px);
 }
 
 .intro-bg-svg {
-  position: fixed;
+  position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
@@ -990,7 +1018,6 @@ body {
       <button class="month-btn active" onclick="showMonth(6,this)">6월</button>
       <button class="month-btn" onclick="showMonth(7,this)">7월</button>
       <button class="month-btn" onclick="showMonth(8,this)">8월</button>
-      <button class="month-btn" onclick="window.print()" style="margin-left:auto;" title="인쇄">🖨️ 인쇄</button>
     </div>
 
     <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
@@ -1195,6 +1222,7 @@ const CAT_COLORS = {
 };
 
 // 신청 링크 — key 기준
+const CLOSED_COURSES = ['mapo'];
 const APPLY_LINKS = {
   ulim:      'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
   ulim1:     'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
@@ -1202,7 +1230,7 @@ const APPLY_LINKS = {
   sabujak:   'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
   woori:     'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
   saenghyup: 'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
-  mapo:      'https://docs.google.com/forms/d/e/1FAIpQLSdUPRgsCGczYrroBQXX8Bce2l83n1rzaiMrd9m92g0egSPHJA/viewform',
+  mapo:      '',
   common:    '',
 };
 
@@ -1386,9 +1414,11 @@ function renderDetail(co, col, activeIdx, dateStr){
     : `<div class="panel-desc-placeholder">기관 소개글을 입력해 주세요</div>`;
 
   const applyUrl = APPLY_LINKS[co.key];
-  const statusBadge = applyUrl
-    ? `<span class="status-badge status-open" style="font-size:0.7rem;padding:3px 10px;">✅ 모집중</span>`
-    : `<span class="status-badge status-closed" style="font-size:0.7rem;padding:3px 10px;">모집예정</span>`;
+  const statusBadge = CLOSED_COURSES.includes(co.key)
+    ? `<span class="status-badge status-done" style="font-size:0.7rem;padding:3px 10px;">모집완료</span>`
+    : applyUrl
+      ? `<span class="status-badge status-open" style="font-size:0.7rem;padding:3px 10px;">✅ 모집중</span>`
+      : `<span class="status-badge status-closed" style="font-size:0.7rem;padding:3px 10px;">모집예정</span>`;
   const applyHTML = applyUrl
     ? `<a class="apply-btn" href="${applyUrl}" target="_blank" rel="noopener"
           style="background:var(--brand);color:#fff;">
@@ -1442,9 +1472,11 @@ function renderAllCourses(){
     ${COURSES.map((co,i)=>{
       const col=COL[co.key];
       const applyUrl = APPLY_LINKS[co.key];
-      const statusBadge = applyUrl
-        ? `<span class="status-badge status-open">모집중</span>`
-        : `<span class="status-badge status-closed">모집예정</span>`;
+      const statusBadge = CLOSED_COURSES.includes(co.key)
+        ? `<span class="status-badge status-done">모집완료</span>`
+        : applyUrl
+          ? `<span class="status-badge status-open">모집중</span>`
+          : `<span class="status-badge status-closed">모집예정</span>`;
       return `<div class="course-card" onclick="openCourse(${i})">
         <div class="course-card-top">
           <span class="course-card-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
@@ -1546,13 +1578,26 @@ const ORGS = [
 /* ── 인트로 → 메인 전환 ── */
 function goFromIntro(page){
   const intro = document.getElementById('page-intro');
-  intro.classList.add('hidden');
-  setTimeout(() => { intro.style.display = 'none'; }, 550);
+  // 즉시 숨김 처리 (애니메이션 없이 확실하게)
+  intro.style.opacity = '0';
+  intro.style.pointerEvents = 'none';
+  setTimeout(() => {
+    intro.style.display = 'none';
+    intro.classList.add('hidden');
+  }, 50);
+
+  const layout = document.querySelector('.layout');
+  const orgs = document.getElementById('page-orgs');
 
   if(page === 'orgs'){
-    const btn = document.getElementById('nav-orgs');
-    switchPage('orgs', btn);
+    layout.style.display = 'none';
+    orgs.style.display = 'block';
+    document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('nav-orgs').classList.add('active');
+    renderOrgsPage();
   } else {
+    layout.style.removeProperty('display');
+    orgs.style.display = 'none';
     document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('nav-schedule').classList.add('active');
   }
@@ -1561,13 +1606,15 @@ function goFromIntro(page){
 /* ── 홈(인트로)으로 돌아가기 ── */
 function goHome(){
   const intro = document.getElementById('page-intro');
+  intro.classList.remove('hidden');
+  intro.style.opacity = '0';
+  intro.style.pointerEvents = '';
   intro.style.display = 'flex';
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => { intro.classList.remove('hidden'); });
+    requestAnimationFrame(() => { intro.style.opacity = '1'; });
   });
   document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
-  // 교육일정 페이지 상태로 복귀 (인트로 닫으면 뒤는 교육일정)
-  document.querySelector('.layout').style.display = '';
+  document.querySelector('.layout').style.removeProperty('display');
   document.getElementById('page-orgs').style.display = 'none';
 }
 
