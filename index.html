@@ -1271,7 +1271,6 @@ function filterCourse(key, btn){
     b.style.color = '';
     b.style.borderColor = '';
   });
-  // 전체보기 버튼 비활성화 스타일
   const allBtn = document.getElementById('cat-all');
   allBtn.style.background = '';
   allBtn.style.color = '';
@@ -1281,10 +1280,35 @@ function filterCourse(key, btn){
   btn.classList.add('active');
   btn.style.background = CAT_COLORS[key].bg;
 
+  // 해당 과정의 첫 번째 이벤트 찾아서 그 월로 달력 이동
+  const firstEvent = EVENTS.find(e => COURSES[e.ci].key === key);
+  if(firstEvent){
+    currentMonth = firstEvent.month;
+    // 월 버튼 활성화 상태 업데이트
+    document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.month-btn').forEach(b => {
+      if(b.textContent === currentMonth + '월') b.classList.add('active');
+    });
+  }
+
   // 달력 해당 과정만 표시
   renderCal(currentMonth);
 
-  // 해당 기관의 첫 번째 과정 상세 표시
+  // 첫 번째 이벤트 칩 자동 선택 하이라이트
+  if(firstEvent){
+    setTimeout(()=>{
+      const chip = document.querySelector(
+        `[data-ev-key="${firstEvent.month}-${firstEvent.day}-${firstEvent.ci}-${firstEvent.si}"]`
+      );
+      if(chip){
+        if(selectedChip) selectedChip.classList.remove('selected');
+        selectedChip = chip;
+        chip.classList.add('selected');
+      }
+    }, 50);
+  }
+
+  // 해당 과정 상세 표시
   const idx = COURSES.findIndex(c=>c.key===key);
   if(idx !== -1) openCourse(idx);
 }
