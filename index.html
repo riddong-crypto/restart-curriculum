@@ -9,9 +9,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
 
 :root {
-  --brand:        #1A6E5C;
-  --brand-light:  #E6F4F1;
-  --brand-dark:   #0F4A3D;
+  --brand:        #F6AA52;
+  --brand-light:  #FDF1E4;
+  --brand-dark:   #7A4A22;
 
   --ulim:         #0F6E56; --ulim-bg:   #E1F5EE; --ulim-bd:   #5DCAA5;
   --sabujak:      #3C3489; --sabujak-bg:#EEEDFE; --sabujak-bd:#AFA9EC;
@@ -102,10 +102,99 @@ body {
   letter-spacing: -0.01em;
 }
 .top-nav-btn:hover { color: #ffffff; background: rgba(255,255,255,0.07); }
-.top-nav-btn.active { color: #ffffff; border-bottom-color: #5DCAA5; }
+.top-nav-btn.active { color: #ffffff; border-bottom-color: #F8C98A; }
 
 /* 기관 소개 페이지 */
 #page-orgs { display: none; padding: 24px 28px; max-width: 900px; margin: 0 auto; }
+
+/* 과정 소개 / 사업개요 카드 (각 과정 페이지 상단) */
+.program-info-card {
+  background: var(--brand-light);
+  border: 1px solid #f0d3ba;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.program-info-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.program-info-desc {
+  font-size: 0.74rem;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+.program-info-desc-placeholder {
+  font-size: 0.74rem;
+  color: var(--hint);
+  line-height: 1.65;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.program-info-row {
+  display: flex;
+  gap: 8px;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+.program-info-key {
+  flex-shrink: 0;
+  width: 64px;
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+.program-info-val { color: var(--text); }
+.program-info-val.tbd { color: var(--hint); font-style: italic; }
+
+
+/* 참여 후기 */
+#page-reviews { display: none; padding: 24px 28px; max-width: 780px; margin: 0 auto; }
+.reviews-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+.review-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.review-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+.review-card-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+.review-card-quote { font-size: 0.82rem; color: var(--text); line-height: 1.75; }
+.review-card-quote::before { content: '“'; font-weight: 700; opacity: 0.4; }
+.review-card-quote::after  { content: '”'; font-weight: 700; opacity: 0.4; }
+.review-card-footer { margin-top: 12px; font-size: 0.7rem; color: var(--hint); }
+.review-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+.panel-reviews-section .review-card { padding: 14px 16px; }
+.panel-reviews-section .review-card-quote { font-size: 0.78rem; }
+
+
 
 .orgs-grid {
   display: grid;
@@ -701,7 +790,7 @@ body {
 #page-intro {
   position: fixed;
   inset: 0;
-  background: linear-gradient(160deg, #1a6e5c 0%, #2a9e7a 60%, #3dbf8a 100%);
+  background: linear-gradient(160deg, #7a4a22 0%, #c9812f 55%, #f6aa52 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -727,7 +816,7 @@ body {
 
 .intro-inner {
   width: 100%;
-  max-width: 560px;
+  max-width: 640px;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -834,11 +923,7 @@ body {
   text-overflow: ellipsis;
 }
 
-.intro-btns {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
+.intro-btns-group {
   padding-top: 4px;
   position: relative;
   z-index: 1;
@@ -849,7 +934,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 22px 32px;
+  padding: 24px 20px;
   border-radius: 14px;
   border: none;
   background: rgba(255,255,255,0.93);
@@ -857,9 +942,6 @@ body {
   font-family: inherit;
   cursor: pointer;
   transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
-  min-width: 150px;
-  flex: 1;
-  max-width: 220px;
   text-decoration: none;
   box-shadow: 0 2px 16px rgba(0,0,0,0.1);
 }
@@ -869,6 +951,10 @@ body {
   transform: translateY(-3px);
   box-shadow: 0 6px 24px rgba(0,0,0,0.15);
 }
+
+.intro-btn-c1:hover { background: var(--brand-light) !important; transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,0.15); }
+.intro-btn-c2:hover { background: var(--ulim-bg) !important; transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,0.15); }
+.intro-btn-c3:hover { background: var(--sabujak-bg) !important; transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,0.15); }
 
 .intro-btn-icon  { font-size: 2rem; line-height: 1; }
 .intro-btn-label { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; color: var(--brand-dark); }
@@ -883,8 +969,7 @@ body {
 
 @media (max-width: 480px) {
   .intro-title  { font-size: 2.2rem; }
-  .intro-btns   { flex-direction: column; align-items: stretch; }
-  .intro-btn    { max-width: 100%; }
+  .intro-btns-row { grid-template-columns: 1fr !important; }
 }
 </style>
 </head>
@@ -950,8 +1035,19 @@ body {
 
     <div class="intro-section">
       <div class="intro-section-title">마포 돌봄캠퍼스란</div>
-      <div class="intro-section-body">
-        마포 지역 돌봄 경력자를 찾아내, <strong>재교육 → 인턴십 → 실천단</strong>으로 이어지는 단계별 과정을 통해 협력 기반의 돌봄 커먼즈 활동가로 전환하는 <strong>현장 연계 교육과정</strong>입니다.
+      <div class="intro-section-body" style="margin-bottom:12px;">
+        마포돌봄캠퍼스는 <strong>돌보는 사람의 성장을 돕고</strong>, <strong>서로 돌보는 시민을 만나는</strong> 현장형 교육 과정입니다.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.97rem;color:#2d3748;background:var(--brand-light);border-radius:8px;padding:10px 14px;border:1px solid #f0d3ba;">
+          <span style="font-size:1.15rem;">🌱</span><span><strong style="color:var(--brand-dark);">스타트과정</strong>&nbsp;—&nbsp;돌봄시민교육</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.97rem;color:#2d3748;background:var(--brand-light);border-radius:8px;padding:10px 14px;border:1px solid #f0d3ba;">
+          <span style="font-size:1.15rem;">📅</span><span><strong style="color:var(--brand-dark);">리스타트과정</strong>&nbsp;—&nbsp;돌봄경력자 재교육 + 인턴십</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.97rem;color:#2d3748;background:var(--brand-light);border-radius:8px;padding:10px 14px;border:1px solid #f0d3ba;">
+          <span style="font-size:1.15rem;">🧭</span><span><strong style="color:var(--brand-dark);">돌봄리더 성장과정</strong>&nbsp;—&nbsp;돌봄활동가 성장프로그램</span>
+        </div>
       </div>
     </div>
 
@@ -962,31 +1058,38 @@ body {
       </div>
     </div>
 
-    <div class="intro-section">
-      <div class="intro-section-title">사업 개요</div>
-      <div class="intro-info-table">
-        <div class="intro-info-row"><span class="intro-info-key">교육기간</span><span class="intro-info-val">2026년 6월 ~ 8월</span></div>
-        <div class="intro-info-row"><span class="intro-info-key">모집대상</span><span class="intro-info-val">돌봄 관련 자격 소지자, 돌봄 활동 경력자, 돌봄 활동 희망자</span></div>
-        <div class="intro-info-row"><span class="intro-info-key" style="width:88px;white-space:normal;line-height:1.4;">함께하는 곳들</span><span class="intro-info-val">울림두레돌봄사회적협동조합, 마포의료복지사회적협동조합, 우리동물병원생명사회적협동조합, 발달장애청년허브사부작사회적협동조합, 울림두레소비자생활협동조합, 마포구사회적경제통합지원센터</span></div>
+    <div class="intro-btns-group">
+      <div class="intro-btns-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+        <button class="intro-btn intro-btn-c1" style="max-width:none;width:100%;min-width:0;background:var(--brand-light);" onclick="goFromIntro('schedule')">
+          <span class="intro-btn-icon">📅</span>
+          <span class="intro-btn-label" style="color:var(--brand-dark);">돌봄리스타트과정</span>
+        </button>
+        <button class="intro-btn intro-btn-c2" style="max-width:none;width:100%;min-width:0;background:var(--ulim-bg);" onclick="goFromIntro('schedule2')">
+          <span class="intro-btn-icon">🌱</span>
+          <span class="intro-btn-label" style="color:var(--ulim);">돌봄스타트과정</span>
+        </button>
+        <button class="intro-btn intro-btn-c3" style="max-width:none;width:100%;min-width:0;background:var(--sabujak-bg);" onclick="goFromIntro('schedule3')">
+          <span class="intro-btn-icon">🧭</span>
+          <span class="intro-btn-label" style="color:var(--sabujak);">돌봄리더 성장과정</span>
+        </button>
       </div>
-    </div>
-
-    <div class="intro-btns">
-      <button class="intro-btn" onclick="goFromIntro('schedule')">
-        <span class="intro-btn-icon">📅</span>
-        <span class="intro-btn-label">교육일정 보기</span>
-      </button>
-      <button class="intro-btn" onclick="goFromIntro('orgs')">
-        <span class="intro-btn-icon">🏢</span>
-        <span class="intro-btn-label">교육 운영 기관 안내</span>
-      </button>
+      <div class="intro-btns-row" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px;">
+        <button class="intro-btn" style="max-width:none;width:100%;min-width:0;" onclick="goFromIntro('reviews')">
+          <span class="intro-btn-icon">💬</span>
+          <span class="intro-btn-label">참여 후기</span>
+        </button>
+        <button class="intro-btn" style="max-width:none;width:100%;min-width:0;" onclick="goFromIntro('orgs')">
+          <span class="intro-btn-icon">🏢</span>
+          <span class="intro-btn-label">교육 운영 기관 안내</span>
+        </button>
+      </div>
     </div>
 
   </div>
 
   <div class="intro-footer">
     <a href="https://maposehub.org/" target="_blank" rel="noopener" id="intro-logo-link">
-      <img id="intro-logo-img" alt="마포구사회적경제통합지원센터" style="height:48px;width:auto;opacity:0.9;display:block;margin:0 auto;">
+      <img id="intro-logo-img" alt="마포구사회적경제통합지원센터" style="height:60px;width:auto;opacity:0.9;display:block;margin:0 auto;">
     </a>
   </div>
 </div>
@@ -998,15 +1101,26 @@ body {
   </div>
   <nav class="top-nav">
     <button class="top-nav-btn" id="nav-home" onclick="goHome()">🏠 홈</button>
-    <button class="top-nav-btn active" id="nav-schedule" onclick="switchPage('schedule', this)">📅 교육일정</button>
-    <button class="top-nav-btn" id="nav-orgs" onclick="switchPage('orgs', this)">🏢 기관 소개</button>
+    <button class="top-nav-btn active" id="nav-schedule" onclick="switchPage('schedule', this)">📅 리스타트</button>
+    <button class="top-nav-btn" id="nav-schedule2" onclick="switchPage('schedule2', this)">🌱 스타트</button>
+    <button class="top-nav-btn" id="nav-schedule3" onclick="switchPage('schedule3', this)">🧭 리더성장</button>
+    <button class="top-nav-btn" id="nav-reviews" onclick="switchPage('reviews', this)">💬 후기</button>
+    <button class="top-nav-btn" id="nav-orgs" onclick="switchPage('orgs', this)">🏢 기관</button>
   </nav>
 </div>
 
-<div class="layout">
+<div class="layout" id="page-schedule">
 
   <div class="left-panel">
-    <div class="legend">
+    <div class="program-info-card">
+      <div class="program-info-title">📋 돌봄리스타트과정 사업개요</div>
+      <div class="program-info-desc">돌봄경력자 재교육과 인턴십과정으로 이어지는 프로그램입니다.</div>
+      <div class="program-info-row"><span class="program-info-key">교육기간</span><span class="program-info-val">2026년 6월 ~ 8월</span></div>
+      <div class="program-info-row"><span class="program-info-key">모집대상</span><span class="program-info-val">돌봄 관련 자격 소지자, 돌봄 활동 경력자, 돌봄 활동 희망자</span></div>
+      <div class="program-info-row"><span class="program-info-key" style="width:78px;">함께하는 곳들</span><span class="program-info-val">울림두레돌봄사회적협동조합, 마포의료복지사회적협동조합, 우리동물병원생명사회적협동조합, 발달장애청년허브사부작사회적협동조합, 울림두레소비자생활협동조합, 마포구사회적경제통합지원센터</span></div>
+    </div>
+
+    <div class="legend" id="legend-schedule">
       <button class="legend-item active" id="cat-all" onclick="showAll(this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
       <button class="legend-item" id="cat-ulim1"     onclick="filterCourse('ulim1',this)"    style=""><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 성인(노인)단기돌봄</button>
       <button class="legend-item" id="cat-ulim2"     onclick="filterCourse('ulim2',this)"    style=""><div class="legend-dot" style="background:#dff0e8;border:1px solid #3dab85;"></div>울림두레돌봄사협 — 홈케어(정리/청소)</button>
@@ -1017,11 +1131,11 @@ body {
       <button class="legend-item" id="cat-common"    onclick="filterCourse('common',this)"   style=""><div class="legend-dot" style="background:var(--common-bg);border:1px solid var(--common-bd);"></div>공통과정 — 사전돌봄의향서</button>
     </div>
 
-    <div class="month-nav">
+    <div class="month-nav" id="monthnav-schedule">
       <span class="month-year">2026</span>
-      <button class="month-btn active" onclick="showMonth(6,this)">6월</button>
-      <button class="month-btn" onclick="showMonth(7,this)">7월</button>
-      <button class="month-btn" onclick="showMonth(8,this)">8월</button>
+      <button class="month-btn active" data-y="2026" data-m="6" onclick="showMonth(6,this)">6월</button>
+      <button class="month-btn" data-y="2026" data-m="7" onclick="showMonth(7,this)">7월</button>
+      <button class="month-btn" data-y="2026" data-m="8" onclick="showMonth(8,this)">8월</button>
     </div>
 
     <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
@@ -1047,6 +1161,102 @@ body {
 <!-- 기관 소개 페이지 -->
 <div id="page-orgs"></div>
 
+<!-- 돌봄스타트과정 페이지 -->
+<div class="layout" id="page-schedule2" style="display:none;">
+
+  <div class="left-panel">
+    <div class="program-info-card">
+      <div class="program-info-title">🌱 돌봄스타트과정 소개</div>
+      <div class="program-info-desc">돌봄지역사회에 관심을 갖고 첫 발을 내딛는 돌봄시민교육입니다. (필수과목 2, 선택과목 1)</div>
+      <div class="program-info-row"><span class="program-info-key">교육기간</span><span class="program-info-val">2026년 9월 ~ 11월</span></div>
+      <div class="program-info-row"><span class="program-info-key">정원</span><span class="program-info-val">40명</span></div>
+      <div class="program-info-row"><span class="program-info-key">모집대상</span><span class="program-info-val">돌봄지역사회에 관심 있는 시민 누구나</span></div>
+      <div class="program-info-row"><span class="program-info-key" style="width:78px;">함께하는 곳들</span><span class="program-info-val">울림두레돌봄사회적협동조합, 민트협동조합, 우리동물병원생명사회적협동조합</span></div>
+    </div>
+
+    <div class="legend" id="legend-schedule2">
+      <button class="legend-item active" id="cat-all-schedule2" onclick="showAllP('schedule2',this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
+      <button class="legend-item" id="cat-start1-schedule2" onclick="filterCourseP('schedule2','start1',this)"><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 돌봄스타트과정</button>
+    </div>
+
+    <div class="month-nav" id="monthnav-schedule2">
+      <span class="month-year">2026</span>
+      <button class="month-btn active" data-y="2026" data-m="9" onclick="showMonthP('schedule2',2026,9,this)">9월</button>
+      <button class="month-btn" data-y="2026" data-m="10" onclick="showMonthP('schedule2',2026,10,this)">10월</button>
+      <button class="month-btn" data-y="2026" data-m="11" onclick="showMonthP('schedule2',2026,11,this)">11월</button>
+    </div>
+
+    <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
+    <div class="cal-wrap">
+      <div class="cal-head-row">
+        <div class="cal-head-cell sun">일</div>
+        <div class="cal-head-cell">월</div>
+        <div class="cal-head-cell">화</div>
+        <div class="cal-head-cell">수</div>
+        <div class="cal-head-cell">목</div>
+        <div class="cal-head-cell">금</div>
+        <div class="cal-head-cell sat">토</div>
+      </div>
+      <div class="cal-body-grid" id="cal-body-schedule2"></div>
+    </div>
+    <div id="schedule2-footer-logo" style="padding:16px 12px 20px;text-align:center;border-top:1px solid var(--border-light);margin-top:8px;"></div>
+  </div>
+
+  <div class="right-panel" id="right-panel-schedule2"></div>
+
+</div>
+
+<!-- 돌봄리더 성장과정 페이지 -->
+<div class="layout" id="page-schedule3" style="display:none;">
+
+  <div class="left-panel">
+    <div class="program-info-card">
+      <div class="program-info-title">🧭 마포돌봄리더를 위한 문화성장 프로그램</div>
+      <div class="program-info-desc">마포지역의 여러 기관에서 추천된 돌봄 리더 20분들의 그간 돌봄 실천과 공로를 공적으로 인정하고, 쉼과 역량강화를 위한 총 6회 프로그램을 진행합니다.</div>
+      <div class="program-info-row"><span class="program-info-key">교육기간</span><span class="program-info-val">2026년 8월 ~ 2027년 1월</span></div>
+      <div class="program-info-row"><span class="program-info-key">정원</span><span class="program-info-val">20명</span></div>
+      <div class="program-info-row"><span class="program-info-key">모집대상</span><span class="program-info-val">마포지역 각 기관에서 추천된 돌봄리더</span></div>
+      <div class="program-info-row"><span class="program-info-key" style="width:78px;">운영</span><span class="program-info-val">마포구사회적경제통합지원센터</span></div>
+    </div>
+
+    <div class="legend" id="legend-schedule3">
+      <button class="legend-item active" id="cat-all-schedule3" onclick="showAllP('schedule3',this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
+      <button class="legend-item" id="cat-leader1-schedule3" onclick="filterCourseP('schedule3','leader1',this)"><div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak-bd);"></div>마포구사회적경제통합지원센터 — 문화성장 프로그램</button>
+    </div>
+
+    <div class="month-nav" id="monthnav-schedule3">
+      <span class="month-year">2026~27</span>
+      <button class="month-btn active" data-y="2026" data-m="8" onclick="showMonthP('schedule3',2026,8,this)">8월</button>
+      <button class="month-btn" data-y="2026" data-m="9" onclick="showMonthP('schedule3',2026,9,this)">9월</button>
+      <button class="month-btn" data-y="2026" data-m="10" onclick="showMonthP('schedule3',2026,10,this)">10월</button>
+      <button class="month-btn" data-y="2026" data-m="11" onclick="showMonthP('schedule3',2026,11,this)">11월</button>
+      <button class="month-btn" data-y="2026" data-m="12" onclick="showMonthP('schedule3',2026,12,this)">12월</button>
+      <button class="month-btn" data-y="2027" data-m="1" onclick="showMonthP('schedule3',2027,1,this)">27.1월</button>
+    </div>
+
+    <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
+    <div class="cal-wrap">
+      <div class="cal-head-row">
+        <div class="cal-head-cell sun">일</div>
+        <div class="cal-head-cell">월</div>
+        <div class="cal-head-cell">화</div>
+        <div class="cal-head-cell">수</div>
+        <div class="cal-head-cell">목</div>
+        <div class="cal-head-cell">금</div>
+        <div class="cal-head-cell sat">토</div>
+      </div>
+      <div class="cal-body-grid" id="cal-body-schedule3"></div>
+    </div>
+    <div id="schedule3-footer-logo" style="padding:16px 12px 20px;text-align:center;border-top:1px solid var(--border-light);margin-top:8px;"></div>
+  </div>
+
+  <div class="right-panel" id="right-panel-schedule3"></div>
+
+</div>
+
+<!-- 참여 후기 페이지 -->
+<div id="page-reviews" style="display:none;"></div>
+
 <!-- 기관 상세 모달 -->
 <div class="org-detail-overlay" id="org-overlay" onclick="closeOrgDetail(event)">
   <div class="org-detail-panel" id="org-detail-panel"></div>
@@ -1063,6 +1273,8 @@ const COL = {
   saenghyup: {bg:'#EAF3DE',tc:'#27500A',bd:'#97C459'},
   common:    {bg:'#E6F1FB',tc:'#0C447C',bd:'#85B7EB'},
   mapo:      {bg:'#FDE8F0',tc:'#8B1A4A',bd:'#E07AAF'},
+  start1:    {bg:'#E1F5EE',tc:'#085041',bd:'#5DCAA5'},
+  leader1:   {bg:'#EEEDFE',tc:'#3C3489',bd:'#AFA9EC'},
 };
 
 const WD = ['일','월','화','수','목','금','토'];
@@ -1216,6 +1428,61 @@ const EVENTS = [
   {month:8,day:6,  ci:5,si:4,label:'커뮤니티밥상 5강'},          // 10:00
 ];
 
+/* ── 돌봄스타트과정 (schedule2) ── */
+const COURSES2 = [
+  {
+    key:'start1', org:'울림두레돌봄사회적협동조합', name:'돌봄스타트과정',
+    desc:'돌봄지역사회에 관심을 갖고 첫 발을 내딛는 돌봄시민교육입니다. (필수과목 2, 선택과목 1)',
+    meta:{정원:'40명', 일정:'2026.9.10 ~ 11월 중', 비고:''},
+    sessions:[
+      {label:'1강',date:'2026.9.10 (목)',time:'10:00~13:00',subject:'동행실전기술(선), 돌봄시민입문(필)',sub:'',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'2강',date:'2026.9.10 (목)',time:'13:00~17:00',subject:'돌봄시민입문(필), 주거돌봄기술(선)',sub:'',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'3강',date:'2026.9.17 (목)',time:'10:00~13:00',subject:'식물 돌봄 기술(선), 돌봄시민입문(필)',sub:'',instructor:'울림두레돌봄사회적협동조합, 민트협동조합'},
+      {label:'4강',date:'2026.9.17 (목)',time:'13:00~17:00',subject:'돌봄시민입문(필), 동물돌봄기술(선)',sub:'',instructor:'울림두레돌봄사회적협동조합, 우리동물병원생명사회적협동조합'},
+      {label:'5강',date:'2026년 11월 중',time:'4시간',subject:'돌봄의향서워크숍, 서로돌봄실천활동 워크숍, 돌봄시민 위촉장 수여',sub:'필수',instructor:'울림두레돌봄사회적협동조합'},
+    ],
+  },
+];
+const EVENTS2 = [
+  {month:9,day:10, ci:0,si:0,label:'스타트 1강'},
+  {month:9,day:10, ci:0,si:1,label:'스타트 2강'},
+  {month:9,day:17, ci:0,si:2,label:'스타트 3강'},
+  {month:9,day:17, ci:0,si:3,label:'스타트 4강'},
+];
+
+/* ── 돌봄리더 성장과정 (schedule3) ── */
+const COURSES3 = [
+  {
+    key:'leader1', org:'마포구사회적경제통합지원센터', name:'마포돌봄리더를 위한 문화성장 프로그램',
+    desc:'마포지역의 여러 기관에서 추천된 돌봄 리더 20분들의 그간 돌봄 실천과 공로를 공적으로 인정하고, 쉼과 역량강화를 위한 총 6회 프로그램을 진행합니다.',
+    meta:{정원:'20명', 일정:'2026.8.18 ~ 2027.1.26', 비고:''},
+    sessions:[
+      {label:'1강',date:'2026.8.18 (화)',time:'19:00~21:00',subject:'예방을 위한 물리치료',sub:'',instructor:''},
+      {label:'2강',date:'2026.9.22 (화)',time:'19:00~21:00',subject:'꽃다발 만들기',sub:'',instructor:''},
+      {label:'3강',date:'2026.10.27 (화)',time:'19:00~21:00',subject:'싱잉볼 요가',sub:'',instructor:''},
+      {label:'4강',date:'2026.11.24 (화)',time:'19:00~21:00',subject:'문화공연 관람',sub:'',instructor:''},
+      {label:'5강',date:'2026.12.22 (화)',time:'19:00~21:00',subject:'사전돌봄의향서',sub:'',instructor:''},
+      {label:'6강',date:'2027.1.26 (화)',time:'19:00~21:00',subject:'생애말기돌봄',sub:'',instructor:''},
+    ],
+  },
+];
+const EVENTS3 = [
+  {month:8,day:18, y:2026, ci:0,si:0,label:'리더성장 1강'},
+  {month:9,day:22, y:2026, ci:0,si:1,label:'리더성장 2강'},
+  {month:10,day:27,y:2026, ci:0,si:2,label:'리더성장 3강'},
+  {month:11,day:24,y:2026, ci:0,si:3,label:'리더성장 4강'},
+  {month:12,day:22,y:2026, ci:0,si:4,label:'리더성장 5강'},
+  {month:1, day:26,y:2027, ci:0,si:5,label:'리더성장 6강'},
+];
+
+
+/* ── 참여 후기 ──
+   courseKey: COURSES 배열의 key 값과 일치시키면 해당 과정 상세페이지에도 자동 노출됩니다.
+   예: { courseKey:'ulim1', name:'김OO', cohort:'1기 수료', content:'후기 내용...', date:'2026.07' }
+*/
+const REVIEWS = [
+];
+
 let selectedChip = null;
 let currentMonth = 6;
 let activeFilterKey = null; // null = 전체보기
@@ -1232,7 +1499,7 @@ const CAT_COLORS = {
 };
 
 // 신청 링크 — key 기준
-const CLOSED_COURSES = ['mapo'];
+const CLOSED_COURSES = ['common', 'ulim1', 'ulim2', 'sabujak', 'woori', 'saenghyup', 'mapo'];
 const APPLY_LINKS = {
   ulim:      'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
   ulim1:     'https://docs.google.com/forms/d/e/1FAIpQLSdKJlyLY8spkBzINSI4Kfu0LE6ZLenvV7TYErNHJ9B0VR8lNA/viewform',
@@ -1248,99 +1515,125 @@ function mk(tag, cls){ const e=document.createElement(tag); if(cls) e.className=
 function getDays(y,m){ return new Date(y,m,0).getDate(); }
 function getFirst(y,m){ return new Date(y,m-1,1).getDay(); }
 
+/* ── 프로그램(과정) 레지스트리 — 리스타트/스타트/리더성장 공용 캘린더 엔진 ── */
+const PROGRAMS = {
+  schedule: {
+    courses: COURSES, events: EVENTS, closed: CLOSED_COURSES, applyLinks: APPLY_LINKS,
+    calBody: 'cal-body', rightPanel: 'right-panel',
+    month: [2026, 6], filterKey: null, selectedChip: null,
+    instructorLabel: '강사', contact: CONTACT, contactExcludeKeys: ['mapo'],
+  },
+  schedule2: {
+    courses: COURSES2, events: EVENTS2, closed: [], applyLinks: {},
+    calBody: 'cal-body-schedule2', rightPanel: 'right-panel-schedule2',
+    month: [2026, 9], filterKey: null, selectedChip: null,
+    instructorLabel: '주관', contact: null, contactExcludeKeys: [],
+  },
+  schedule3: {
+    courses: COURSES3, events: EVENTS3, closed: [], applyLinks: {},
+    calBody: 'cal-body-schedule3', rightPanel: 'right-panel-schedule3',
+    month: [2026, 8], filterKey: null, selectedChip: null,
+    instructorLabel: '주관', contact: null, contactExcludeKeys: [],
+  },
+};
+
 /* ── 전체보기 ── */
-function showAll(btn){
-  activeFilterKey = null;
-  document.querySelectorAll('.legend-item').forEach(b=>{
-    b.classList.remove('active');
-    b.style.background = '';
-    b.style.color = '';
-    b.style.borderColor = '';
-  });
+function showAllP(prog, btn){
+  const p = PROGRAMS[prog];
+  p.filterKey = null;
+  const legendRoot = document.getElementById('legend-'+prog);
+  if(legendRoot){
+    legendRoot.querySelectorAll('.legend-item').forEach(b=>{
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
+    });
+  }
   btn.classList.add('active');
   btn.style.background = 'var(--text)';
   btn.style.color = 'var(--white)';
   btn.style.borderColor = 'transparent';
-  renderCal(currentMonth);
-  renderAllCourses();
+  renderCalP(prog);
+  renderAllCoursesP(prog);
 }
 
 /* ── 카테고리 필터 클릭 ── */
-function filterCourse(key, btn){
-  // 이미 활성화된 버튼 클릭 시 전체보기로 복귀
-  if(activeFilterKey === key){
-    showAll(document.getElementById('cat-all'));
+function filterCourseP(prog, key, btn){
+  const p = PROGRAMS[prog];
+  if(p.filterKey === key){
+    showAllP(prog, document.getElementById('cat-all-'+prog) || document.getElementById('cat-all'));
     return;
   }
-  activeFilterKey = key;
+  p.filterKey = key;
 
-  // 모든 버튼 초기화
-  document.querySelectorAll('.legend-item').forEach(b=>{
-    b.classList.remove('active');
-    b.style.background = '';
-    b.style.color = '';
-    b.style.borderColor = '';
-  });
-  const allBtn = document.getElementById('cat-all');
-  allBtn.style.background = '';
-  allBtn.style.color = '';
-  allBtn.style.borderColor = '';
-
-  // 선택 버튼 활성화
-  btn.classList.add('active');
-  btn.style.background = CAT_COLORS[key].bg;
-
-  // 해당 과정의 첫 번째 이벤트 찾아서 그 월로 달력 이동
-  const firstEvent = EVENTS.find(e => COURSES[e.ci].key === key);
-  if(firstEvent){
-    currentMonth = firstEvent.month;
-    // 월 버튼 활성화 상태 업데이트
-    document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.month-btn').forEach(b => {
-      if(b.textContent === currentMonth + '월') b.classList.add('active');
+  const legendRoot = document.getElementById('legend-'+prog);
+  if(legendRoot){
+    legendRoot.querySelectorAll('.legend-item').forEach(b=>{
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
     });
   }
 
-  // 달력 해당 과정만 표시
-  renderCal(currentMonth);
+  btn.classList.add('active');
+  btn.style.background = CAT_COLORS[key] ? CAT_COLORS[key].bg : COL[key].bg;
 
-  // 첫 번째 이벤트 칩 자동 선택 하이라이트
+  const firstEvent = p.events.find(e => p.courses[e.ci].key === key);
+  if(firstEvent){
+    const y = firstEvent.y || 2026;
+    p.month = [y, firstEvent.month];
+    const navRoot = document.getElementById('monthnav-'+prog);
+    if(navRoot){
+      navRoot.querySelectorAll('.month-btn').forEach(b=>{
+        b.classList.toggle('active', Number(b.dataset.y)===y && Number(b.dataset.m)===firstEvent.month);
+      });
+    }
+  }
+
+  renderCalP(prog);
+
   if(firstEvent){
     setTimeout(()=>{
+      const y = firstEvent.y || 2026;
       const chip = document.querySelector(
-        `[data-ev-key="${firstEvent.month}-${firstEvent.day}-${firstEvent.ci}-${firstEvent.si}"]`
+        `[data-ev-key="${prog}-${y}-${firstEvent.month}-${firstEvent.day}-${firstEvent.ci}-${firstEvent.si}"]`
       );
       if(chip){
-        if(selectedChip) selectedChip.classList.remove('selected');
-        selectedChip = chip;
+        if(p.selectedChip) p.selectedChip.classList.remove('selected');
+        p.selectedChip = chip;
         chip.classList.add('selected');
       }
     }, 50);
   }
 
-  // 해당 과정 상세 표시
-  const idx = COURSES.findIndex(c=>c.key===key);
-  if(idx !== -1) openCourse(idx);
+  const idx = p.courses.findIndex(c=>c.key===key);
+  if(idx !== -1) openCourseP(prog, idx);
 }
 
 /* ── 월 탭 ── */
-function showMonth(m, btn){
-  currentMonth = m;
-  document.querySelectorAll('.month-btn').forEach(b=>b.classList.remove('active'));
+function showMonthP(prog, y, m, btn){
+  const p = PROGRAMS[prog];
+  p.month = [y, m];
+  const navRoot = document.getElementById('monthnav-'+prog);
+  if(navRoot) navRoot.querySelectorAll('.month-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  renderCal(m);
+  renderCalP(prog);
 }
 
 /* ── 캘린더 렌더 (필터 적용) ── */
-function renderCal(month){
-  const y=2026, total=getDays(y,month), first=getFirst(y,month), prevTotal=getDays(y,month-1);
-  const body=document.getElementById('cal-body');
+function renderCalP(prog){
+  const p = PROGRAMS[prog];
+  const [y, month] = p.month;
+  const total=getDays(y,month), first=getFirst(y,month), prevTotal=getDays(y,month-1);
+  const body=document.getElementById(p.calBody);
+  if(!body) return;
   body.innerHTML='';
 
-  // 현재 필터에 맞는 이벤트만 추출
-  const visibleEvents = activeFilterKey
-    ? EVENTS.filter(e => COURSES[e.ci].key === activeFilterKey)
-    : EVENTS;
+  const visibleEvents = p.filterKey
+    ? p.events.filter(e => p.courses[e.ci].key === p.filterKey)
+    : p.events;
 
   for(let i=0;i<first;i++){
     const cell=mk('div','cal-cell other');
@@ -1354,14 +1647,14 @@ function renderCal(month){
     const dn=mk('div','day-num'+(dow===0?' sun':dow===6?' sat':''));
     dn.textContent=d; cell.appendChild(dn);
 
-    visibleEvents.filter(e=>e.month===month&&e.day===d).forEach(ev=>{
-      const co=COURSES[ev.ci], col=COL[co.key];
+    visibleEvents.filter(e=>(e.y||2026)===y && e.month===month && e.day===d).forEach(ev=>{
+      const co=p.courses[ev.ci], col=COL[co.key];
       const chip=document.createElement('button');
       chip.className='ev-chip';
       chip.style.cssText=`background:${col.bg};color:${col.tc};border:0.5px solid ${col.bd}66;`;
       chip.textContent=ev.label;
-      chip.dataset.evKey = `${ev.month}-${ev.day}-${ev.ci}-${ev.si}`;
-      chip.onclick=()=>selectEvent(ev, month, d, chip);
+      chip.dataset.evKey = `${prog}-${y}-${month}-${d}-${ev.ci}-${ev.si}`;
+      chip.onclick=()=>selectEventP(prog, ev, y, month, d, chip);
       cell.appendChild(chip);
     });
 
@@ -1377,36 +1670,37 @@ function renderCal(month){
 }
 
 /* ── 캘린더 칩 선택 ── */
-function selectEvent(ev, month, day, chip){
-  if(selectedChip) selectedChip.classList.remove('selected');
-  selectedChip=chip; chip.classList.add('selected');
-  const co=COURSES[ev.ci], col=COL[co.key];
-  const dow=WD[new Date(2026,month-1,day).getDay()];
-  renderDetail(co, col, ev.si, `${month}월 ${day}일 (${dow})`);
+function selectEventP(prog, ev, y, month, day, chip){
+  const p = PROGRAMS[prog];
+  if(p.selectedChip) p.selectedChip.classList.remove('selected');
+  p.selectedChip=chip; chip.classList.add('selected');
+  const co=p.courses[ev.ci], col=COL[co.key];
+  const dow=WD[new Date(y,month-1,day).getDay()];
+  renderDetailP(prog, co, col, ev.si, `${month}월 ${day}일 (${dow})`);
 }
 
 /* ── 세션 클릭 → 달력으로 점프 ── */
-function jumpToSession(co, sessionIdx){
-  const ev = EVENTS.find(e => {
-    const c = COURSES[e.ci];
-    return c === co && e.si === sessionIdx;
-  });
+function jumpToSessionP(prog, co, sessionIdx){
+  const p = PROGRAMS[prog];
+  const ev = p.events.find(e => p.courses[e.ci]===co && e.si===sessionIdx);
   if(!ev) return;
+  const y = ev.y || 2026;
+  p.month = [y, ev.month];
 
-  const monthBtns = document.querySelectorAll('.month-btn');
-  monthBtns.forEach(b=>{
-    const mo = parseInt(b.textContent);
-    b.classList.toggle('active', mo === ev.month);
-  });
-  currentMonth = ev.month;
-  renderCal(ev.month);
+  const navRoot = document.getElementById('monthnav-'+prog);
+  if(navRoot){
+    navRoot.querySelectorAll('.month-btn').forEach(b=>{
+      b.classList.toggle('active', Number(b.dataset.y)===y && Number(b.dataset.m)===ev.month);
+    });
+  }
+  renderCalP(prog);
 
   setTimeout(()=>{
-    const key = `${ev.month}-${ev.day}-${ev.ci}-${ev.si}`;
+    const key = `${prog}-${y}-${ev.month}-${ev.day}-${ev.ci}-${ev.si}`;
     const chip = document.querySelector(`.ev-chip[data-ev-key="${key}"]`);
     if(chip){
-      if(selectedChip) selectedChip.classList.remove('selected');
-      selectedChip = chip;
+      if(p.selectedChip) p.selectedChip.classList.remove('selected');
+      p.selectedChip = chip;
       chip.classList.add('selected');
       chip.scrollIntoView({behavior:'smooth', block:'center'});
     }
@@ -1414,15 +1708,18 @@ function jumpToSession(co, sessionIdx){
 }
 
 /* ── 상세 패널 렌더 ── */
-function renderDetail(co, col, activeIdx, dateStr){
-  const rp=document.getElementById('right-panel');
-  const coIdx = COURSES.indexOf(co);
+function renderDetailP(prog, co, col, activeIdx, dateStr){
+  const p = PROGRAMS[prog];
+  const rp=document.getElementById(p.rightPanel);
+  if(!rp) return;
+  const coIdx = p.courses.indexOf(co);
+  const courseReviews = REVIEWS.filter(r => r.courseKey === co.key);
 
   let sessionsHTML='';
   let prevDate='';
   co.sessions.forEach((s,i)=>{
     const isActive=(i===activeIdx);
-    const hasCalEvent = EVENTS.some(e=>COURSES[e.ci]===co && e.si===i);
+    const hasCalEvent = p.events.some(e=>p.courses[e.ci]===co && e.si===i);
     if(s.date!==prevDate && s.label){
       if(i>0) sessionsHTML+=`<div class="date-divider">${s.date}</div>`;
       prevDate=s.date;
@@ -1430,7 +1727,7 @@ function renderDetail(co, col, activeIdx, dateStr){
     sessionsHTML+=`
     <div class="session-item${isActive?' active-session':''}"
          style="${isActive?`border-color:${col.bd};background:${col.bg}30;`:''}"
-         onclick="${hasCalEvent?`jumpToSession(COURSES[${coIdx}],${i})`:'void(0)'}">
+         onclick="${hasCalEvent?`jumpToSessionP('${prog}', PROGRAMS['${prog}'].courses[${coIdx}], ${i})`:'void(0)'}">
       <div class="session-row1">
         ${s.label?`<span class="session-num" style="background:${col.bg};color:${col.tc};">${s.label}</span>`:''}
         ${!s.label&&s.date?`<span class="session-date">${s.date}</span>`:''}
@@ -1439,7 +1736,7 @@ function renderDetail(co, col, activeIdx, dateStr){
       </div>
       <div class="session-subject">${s.subject}</div>
       ${s.sub?`<div class="session-sub">${s.sub}</div>`:''}
-      ${s.instructor&&s.instructor!=='—'?`<div class="session-instructor">강사: ${s.instructor}</div>`:''}
+      ${s.instructor&&s.instructor!=='—'?`<div class="session-instructor">${p.instructorLabel}: ${s.instructor}</div>`:''}
     </div>`;
   });
 
@@ -1447,21 +1744,24 @@ function renderDetail(co, col, activeIdx, dateStr){
     ? `<div class="panel-desc">${co.desc}</div>`
     : `<div class="panel-desc-placeholder">기관 소개글을 입력해 주세요</div>`;
 
-  const applyUrl = APPLY_LINKS[co.key];
-  const statusBadge = CLOSED_COURSES.includes(co.key)
+  const applyUrl = p.applyLinks[co.key];
+  const isClosed = p.closed.includes(co.key);
+  const statusBadge = isClosed
     ? `<span class="status-badge status-done" style="font-size:0.7rem;padding:3px 10px;">모집완료</span>`
     : applyUrl
       ? `<span class="status-badge status-open" style="font-size:0.7rem;padding:3px 10px;">✅ 모집중</span>`
       : `<span class="status-badge status-closed" style="font-size:0.7rem;padding:3px 10px;">모집예정</span>`;
-  const applyHTML = applyUrl
+  const applyHTML = (applyUrl && !isClosed)
     ? `<a class="apply-btn" href="${applyUrl}" target="_blank" rel="noopener"
           style="background:var(--brand);color:#fff;">
          ✏️ 신청하기
        </a>`
     : '';
 
+  const showContact = p.contact && !(p.contactExcludeKeys||[]).includes(co.key);
+
   rp.innerHTML=`
-    <button class="back-btn" onclick="renderAllCourses()">← 전체 과정 목록</button>
+    <button class="back-btn" onclick="renderAllCoursesP('${prog}')">← 전체 과정 목록</button>
     <div class="panel-inner">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
         <span class="panel-org-badge" style="background:${col.bg};color:${col.tc};margin:0;">${co.org}</span>
@@ -1478,16 +1778,22 @@ function renderDetail(co, col, activeIdx, dateStr){
           </div>`).join('')}
       </div>
       ${co.meta['비고'] ? `<div style="font-size:0.68rem;color:var(--hint);margin-top:8px;padding:8px 10px;background:var(--bg);border-radius:6px;border:1px dashed var(--border);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">* ${co.meta['비고']}</div>` : ''}
-      ${co.key !== 'mapo' ? `
+      ${showContact ? `
       <div class="panel-meta-list" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-light);">
         <div class="panel-meta-row">
           <span class="panel-meta-key" style="width:48px;">문의</span>
-          <span class="panel-meta-val">${CONTACT.org}<br>${CONTACT.tel} &nbsp;·&nbsp; ${CONTACT.mobile}</span>
+          <span class="panel-meta-val">${p.contact.org}<br>${p.contact.tel} &nbsp;·&nbsp; ${p.contact.mobile}</span>
         </div>
       </div>` : ''}
       ${applyHTML}
       <div class="section-title" style="margin-top:16px;">전체 커리큘럼</div>
       <div class="session-list">${sessionsHTML}</div>
+      <div class="panel-reviews-section" style="margin-top:18px;">
+        <div class="section-title">수강생 후기</div>
+        ${courseReviews.length > 0
+          ? `<div class="reviews-grid" style="margin-top:8px;">${courseReviews.map(renderReviewCard).join('')}</div>`
+          : `<div class="panel-desc-placeholder" style="margin-top:8px;">아직 등록된 후기가 없습니다</div>`}
+      </div>
     </div>`;
 
   setTimeout(()=>{
@@ -1497,21 +1803,23 @@ function renderDetail(co, col, activeIdx, dateStr){
 }
 
 /* ── 전체 과정 목록 ── */
-function renderAllCourses(){
-  if(selectedChip){ selectedChip.classList.remove('selected'); selectedChip=null; }
-  const rp=document.getElementById('right-panel');
+function renderAllCoursesP(prog){
+  const p = PROGRAMS[prog];
+  if(p.selectedChip){ p.selectedChip.classList.remove('selected'); p.selectedChip=null; }
+  const rp=document.getElementById(p.rightPanel);
+  if(!rp) return;
 
   rp.innerHTML=`<div class="all-courses">
-    <div class="all-courses-title">전체 과정 목록 <span style="font-weight:400;color:var(--hint);">(${COURSES.length}개 과정)</span></div>
-    ${COURSES.map((co,i)=>{
+    <div class="all-courses-title">전체 과정 목록 <span style="font-weight:400;color:var(--hint);">(${p.courses.length}개 과정)</span></div>
+    ${p.courses.map((co,i)=>{
       const col=COL[co.key];
-      const applyUrl = APPLY_LINKS[co.key];
-      const statusBadge = CLOSED_COURSES.includes(co.key)
+      const applyUrl = p.applyLinks[co.key];
+      const statusBadge = p.closed.includes(co.key)
         ? `<span class="status-badge status-done">모집완료</span>`
         : applyUrl
           ? `<span class="status-badge status-open">모집중</span>`
           : `<span class="status-badge status-closed">모집예정</span>`;
-      return `<div class="course-card" onclick="openCourse(${i})">
+      return `<div class="course-card" onclick="openCourseP('${prog}', ${i})">
         <div class="course-card-top">
           <span class="course-card-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
           ${statusBadge}
@@ -1524,24 +1832,37 @@ function renderAllCourses(){
 }
 
 /* ── 과정 열기 ── */
-function openCourse(idx){
-  const co=COURSES[idx], col=COL[co.key];
-  renderDetail(co, col, -1, '과정 전체 일정');
-  document.querySelectorAll('.legend-item').forEach(b=>{
-    b.classList.remove('active');
-    b.style.background = '';
-    b.style.color = '';
-    b.style.borderColor = '';
-  });
-  const btn = document.getElementById('cat-'+co.key);
-  if(btn){
-    btn.classList.add('active');
-    btn.style.background = CAT_COLORS[co.key].bg;
+function openCourseP(prog, idx){
+  const p = PROGRAMS[prog];
+  const co=p.courses[idx], col=COL[co.key];
+  renderDetailP(prog, co, col, -1, '과정 전체 일정');
+
+  const legendRoot = document.getElementById('legend-'+prog);
+  if(legendRoot){
+    legendRoot.querySelectorAll('.legend-item').forEach(b=>{
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
+    });
+    const btn = document.getElementById('cat-'+co.key+'-'+prog) || document.getElementById('cat-'+co.key);
+    if(btn){
+      btn.classList.add('active');
+      btn.style.background = CAT_COLORS[co.key] ? CAT_COLORS[co.key].bg : col.bg;
+    }
   }
   // 달력도 해당 과정으로 필터
-  activeFilterKey = co.key;
-  renderCal(currentMonth);
+  p.filterKey = co.key;
+  renderCalP(prog);
 }
+
+/* ── 돌봄리스타트과정(schedule) 기존 함수명 호환 래퍼 ──
+   기존 페이지의 정적 HTML(legend/월탭 버튼 등)이 예전 함수명을 그대로 호출하므로 유지합니다. */
+function showAll(btn){ showAllP('schedule', btn); }
+function filterCourse(key, btn){ filterCourseP('schedule', key, btn); }
+function showMonth(m, btn){ showMonthP('schedule', 2026, m, btn); }
+function renderCal(month){ PROGRAMS.schedule.month = [2026, month]; renderCalP('schedule'); }
+function renderAllCourses(){ renderAllCoursesP('schedule'); }
 
 
 /* ── 기관 소개 데이터 ── */
@@ -1620,21 +1941,36 @@ function goFromIntro(page){
     intro.classList.add('hidden');
   }, 50);
 
-  const layout = document.querySelector('.layout');
-  const orgs = document.getElementById('page-orgs');
+  const pageEls = {
+    schedule:  document.getElementById('page-schedule'),
+    schedule2: document.getElementById('page-schedule2'),
+    schedule3: document.getElementById('page-schedule3'),
+    orgs:      document.getElementById('page-orgs'),
+    reviews:   document.getElementById('page-reviews'),
+  };
+  const navIds = {
+    schedule: 'nav-schedule', schedule2: 'nav-schedule2', schedule3: 'nav-schedule3',
+    orgs: 'nav-orgs', reviews: 'nav-reviews',
+  };
+  const flexPages = ['schedule', 'schedule2', 'schedule3'];
 
-  if(page === 'orgs'){
-    layout.style.display = 'none';
-    orgs.style.display = 'block';
-    document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('nav-orgs').classList.add('active');
-    renderOrgsPage();
-  } else {
-    layout.style.removeProperty('display');
-    orgs.style.display = 'none';
-    document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('nav-schedule').classList.add('active');
-  }
+  document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
+
+  Object.entries(pageEls).forEach(([key, el]) => {
+    if(!el) return;
+    if(key === page){
+      if(flexPages.includes(key)) el.style.removeProperty('display');
+      else el.style.display = 'block';
+    } else {
+      el.style.display = 'none';
+    }
+  });
+
+  const activeNav = document.getElementById(navIds[page] || 'nav-schedule');
+  if(activeNav) activeNav.classList.add('active');
+
+  if(page === 'orgs') renderOrgsPage();
+  if(page === 'reviews') renderReviewsPage();
 }
 
 /* ── 홈(인트로)으로 돌아가기 ── */
@@ -1648,8 +1984,11 @@ function goHome(){
     requestAnimationFrame(() => { intro.style.opacity = '1'; });
   });
   document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.layout').style.removeProperty('display');
+  document.getElementById('page-schedule').style.removeProperty('display');
   document.getElementById('page-orgs').style.display = 'none';
+  document.getElementById('page-schedule2').style.display = 'none';
+  document.getElementById('page-schedule3').style.display = 'none';
+  document.getElementById('page-reviews').style.display = 'none';
 }
 
 /* ── 페이지 전환 ── */
@@ -1659,17 +1998,26 @@ function switchPage(page, btn){
   });
   btn.classList.add('active');
 
-  const schedule = document.getElementById('page-schedule') || document.querySelector('.layout');
-  const orgs = document.getElementById('page-orgs');
+  const pageEls = {
+    schedule:  document.getElementById('page-schedule'),
+    schedule2: document.getElementById('page-schedule2'),
+    schedule3: document.getElementById('page-schedule3'),
+    orgs:      document.getElementById('page-orgs'),
+    reviews:   document.getElementById('page-reviews'),
+  };
+  const flexPages = ['schedule', 'schedule2', 'schedule3'];
 
-  if(page === 'schedule'){
-    document.querySelector('.layout').style.display = '';
-    orgs.style.display = 'none';
-  } else {
-    document.querySelector('.layout').style.display = 'none';
-    orgs.style.display = 'block';
-    renderOrgsPage();
-  }
+  Object.entries(pageEls).forEach(([key, el]) => {
+    if(!el) return;
+    if(key === page){
+      el.style.display = flexPages.includes(key) ? '' : 'block';
+    } else {
+      el.style.display = 'none';
+    }
+  });
+
+  if(page === 'orgs') renderOrgsPage();
+  if(page === 'reviews') renderReviewsPage();
 }
 
 /* ── 기관 소개 페이지 렌더 ── */
@@ -1707,10 +2055,44 @@ function renderOrgsPage(){
           </div>`;
         }).join('')}
       </div>
-      <div id="orgs-footer-logo"></div>
+      <div id="orgs-footer-logo" style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;"></div>
     </div>`;
   renderLogoEl('orgs-footer-logo');
-  renderOrgsFooter();
+}
+
+/* ── 후기 카드 렌더 (공용) ── */
+function renderReviewCard(r){
+  const co = COURSES.find(c => c.key === r.courseKey);
+  const col = co ? COL[co.key] : COL.common;
+  const courseLabel = co ? co.name : '';
+  return `
+    <div class="review-card">
+      <div class="review-card-top">
+        ${courseLabel ? `<span class="review-card-badge" style="background:${col.bg};color:${col.tc};">${courseLabel}</span>` : '<span></span>'}
+      </div>
+      <div class="review-card-quote">${r.content}</div>
+      <div class="review-card-footer">${r.name}${r.cohort ? ' · '+r.cohort : ''}${r.date ? ' · '+r.date : ''}</div>
+    </div>`;
+}
+
+/* ── 참여 후기 페이지 렌더 ── */
+function renderReviewsPage(){
+  const el = document.getElementById('page-reviews');
+  const body = REVIEWS.length > 0
+    ? `<div class="reviews-grid">${REVIEWS.map(renderReviewCard).join('')}</div>`
+    : `<div class="review-empty">아직 등록된 후기가 없습니다.<br>참여자 후기가 준비되는 대로 이곳에서 안내해드릴게요.</div>`;
+
+  el.innerHTML = `
+    <div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.68rem;font-weight:700;color:var(--hint);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:4px;">참여 후기</div>
+        <div style="font-size:1.05rem;font-weight:700;letter-spacing:-0.02em;">돌봄 캠퍼스 참여자들의 이야기</div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:5px;">교육에 참여한 분들의 생생한 후기를 모았습니다.</div>
+      </div>
+      ${body}
+      <div id="reviews-footer-logo"></div>
+    </div>`;
+  renderLogoEl('reviews-footer-logo');
 }
 
 /* ── 기관 상세 모달 ── */
@@ -1796,29 +2178,22 @@ function renderLogoEl(containerId){
   if(!el) return;
   el.innerHTML = `
     <a href="https://maposehub.org/" target="_blank" rel="noopener"
-       style="display:inline-block;opacity:0.82;transition:opacity 0.15s;"
-       onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.82'">
-      <img src="${LOGO_B64}" alt="마포구사회적경제통합지원센터" style="height:52px;width:auto;">
+       style="display:inline-block;opacity:0.85;transition:opacity 0.15s;"
+       onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+      <img src="${LOGO_B64}" alt="마포구사회적경제통합지원센터" style="height:60px;width:auto;">
     </a>`;
-}
-
-function renderOrgsFooter(){
-  const el = document.getElementById('orgs-footer-logo');
-  if(!el) return;
-  el.innerHTML = `
-    <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;">
-      <a href="https://maposehub.org/" target="_blank" rel="noopener"
-         style="display:inline-block;opacity:0.85;transition:opacity 0.15s;"
-         onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
-        <img src="${LOGO_B64}" alt="마포구사회적경제통합지원센터" style="height:60px;width:auto;">
-      </a>
-    </div>`;
 }
 
 // 초기 렌더
 renderCal(6);
 renderAllCourses();
+renderCalP('schedule2');
+renderAllCoursesP('schedule2');
+renderCalP('schedule3');
+renderAllCoursesP('schedule3');
 renderLogoEl('cal-footer-logo');
+renderLogoEl('schedule2-footer-logo');
+renderLogoEl('schedule3-footer-logo');
 
 // 파비콘 + 인트로 로고 설정
 document.getElementById('favicon').href = LOGO_B64;
