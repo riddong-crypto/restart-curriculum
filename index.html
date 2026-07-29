@@ -105,7 +105,7 @@ body {
 .top-nav-btn.active { color: #ffffff; border-bottom-color: #F8C98A; }
 
 /* 기관 소개 페이지 */
-#page-orgs { display: none; padding: 24px 28px; max-width: 900px; margin: 0 auto; }
+#page-orgs { display: none; width: 100%; box-sizing: border-box; padding: 24px 28px; max-width: 900px; margin: 0 auto; }
 
 /* 과정 소개 / 사업개요 카드 (각 과정 페이지 상단) */
 .program-info-card {
@@ -153,7 +153,7 @@ body {
 
 
 /* 참여 후기 */
-#page-reviews { display: none; padding: 24px 28px; max-width: 780px; margin: 0 auto; }
+#page-reviews { display: none; width: 100%; box-sizing: border-box; padding: 24px 28px; max-width: 980px; margin: 0 auto; }
 .reviews-grid {
   display: flex;
   flex-direction: column;
@@ -193,6 +193,62 @@ body {
 }
 .panel-reviews-section .review-card { padding: 14px 16px; }
 .panel-reviews-section .review-card-quote { font-size: 0.78rem; }
+
+.reviews-link-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+.review-link-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  background: #f2f2ef;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.review-link-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+.review-link-image {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.4rem;
+  color: rgba(255,255,255,0.92);
+}
+.review-link-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,0.35);
+  padding: 4px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(2px);
+}
+.review-link-overlay {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 32px 14px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0) 100%);
+}
+.review-link-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 
 
@@ -970,6 +1026,10 @@ body {
 @media (max-width: 480px) {
   .intro-title  { font-size: 2.2rem; }
   .intro-btns-row { grid-template-columns: 1fr !important; }
+  #page-reviews { padding: 20px 12px; }
+  .reviews-link-grid { gap: 8px; }
+  .review-link-title { font-size: 0.72rem; }
+  .review-link-image { font-size: 2.4rem; }
 }
 </style>
 </head>
@@ -1121,21 +1181,26 @@ body {
     </div>
 
     <div class="legend" id="legend-schedule">
-      <button class="legend-item active" id="cat-all" onclick="showAll(this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
-      <button class="legend-item" id="cat-ulim1"     onclick="filterCourse('ulim1',this)"    style=""><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 성인(노인)단기돌봄</button>
-      <button class="legend-item" id="cat-ulim2"     onclick="filterCourse('ulim2',this)"    style=""><div class="legend-dot" style="background:#dff0e8;border:1px solid #3dab85;"></div>울림두레돌봄사협 — 홈케어(정리/청소)</button>
-      <button class="legend-item" id="cat-sabujak"   onclick="filterCourse('sabujak',this)"  style=""><div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak-bd);"></div>사부작 — 길동무과정</button>
-      <button class="legend-item" id="cat-woori"     onclick="filterCourse('woori',this)"    style=""><div class="legend-dot" style="background:var(--woori-bg);border:1px solid var(--woori-bd);"></div>우리동물병원생명사협 — 반려동물통합돌봄</button>
-      <button class="legend-item" id="cat-saenghyup" onclick="filterCourse('saenghyup',this)" style=""><div class="legend-dot" style="background:var(--saenghyup-bg);border:1px solid var(--saenghyup-bd);"></div>울림두레소비자생협 — 커뮤니티 밥상 기획</button>
-      <button class="legend-item" id="cat-mapo"      onclick="filterCourse('mapo',this)"     style=""><div class="legend-dot" style="background:var(--mapo-bg);border:1px solid var(--mapo-bd);"></div>마포의료복지사협 — 노인건강돌봄지도사</button>
-      <button class="legend-item" id="cat-common"    onclick="filterCourse('common',this)"   style=""><div class="legend-dot" style="background:var(--common-bg);border:1px solid var(--common-bd);"></div>공통과정 — 사전돌봄의향서</button>
+      <button class="legend-item active" data-key="__all__" onclick="showAllP('combined',this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
+      <button class="legend-item" data-key="ulim1"     onclick="filterCourseP('combined','ulim1',this)"    style=""><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 성인(노인)단기돌봄</button>
+      <button class="legend-item" data-key="ulim2"     onclick="filterCourseP('combined','ulim2',this)"    style=""><div class="legend-dot" style="background:#dff0e8;border:1px solid #3dab85;"></div>울림두레돌봄사협 — 홈케어(정리/청소)</button>
+      <button class="legend-item" data-key="sabujak"   onclick="filterCourseP('combined','sabujak',this)"  style=""><div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak-bd);"></div>사부작 — 길동무과정</button>
+      <button class="legend-item" data-key="woori"     onclick="filterCourseP('combined','woori',this)"    style=""><div class="legend-dot" style="background:var(--woori-bg);border:1px solid var(--woori-bd);"></div>우리동물병원생명사협 — 반려동물통합돌봄</button>
+      <button class="legend-item" data-key="saenghyup" onclick="filterCourseP('combined','saenghyup',this)" style=""><div class="legend-dot" style="background:var(--saenghyup-bg);border:1px solid var(--saenghyup-bd);"></div>울림두레소비자생협 — 커뮤니티 밥상 기획</button>
+      <button class="legend-item" data-key="mapo"      onclick="filterCourseP('combined','mapo',this)"     style=""><div class="legend-dot" style="background:var(--mapo-bg);border:1px solid var(--mapo-bd);"></div>마포의료복지사협 — 노인건강돌봄지도사</button>
+      <button class="legend-item" data-key="common"    onclick="filterCourseP('combined','common',this)"   style=""><div class="legend-dot" style="background:var(--common-bg);border:1px solid var(--common-bd);"></div>공통과정 — 사전돌봄의향서</button>
     </div>
 
     <div class="month-nav" id="monthnav-schedule">
-      <span class="month-year">2026</span>
-      <button class="month-btn active" data-y="2026" data-m="6" onclick="showMonth(6,this)">6월</button>
-      <button class="month-btn" data-y="2026" data-m="7" onclick="showMonth(7,this)">7월</button>
-      <button class="month-btn" data-y="2026" data-m="8" onclick="showMonth(8,this)">8월</button>
+      <span class="month-year">2026~27</span>
+      <button class="month-btn active" data-y="2026" data-m="6" onclick="showMonthP('combined',2026,6,this)">6월</button>
+      <button class="month-btn" data-y="2026" data-m="7" onclick="showMonthP('combined',2026,7,this)">7월</button>
+      <button class="month-btn" data-y="2026" data-m="8" onclick="showMonthP('combined',2026,8,this)">8월</button>
+      <button class="month-btn" data-y="2026" data-m="9" onclick="showMonthP('combined',2026,9,this)">9월</button>
+      <button class="month-btn" data-y="2026" data-m="10" onclick="showMonthP('combined',2026,10,this)">10월</button>
+      <button class="month-btn" data-y="2026" data-m="11" onclick="showMonthP('combined',2026,11,this)">11월</button>
+      <button class="month-btn" data-y="2026" data-m="12" onclick="showMonthP('combined',2026,12,this)">12월</button>
+      <button class="month-btn" data-y="2027" data-m="1" onclick="showMonthP('combined',2027,1,this)">27.1월</button>
     </div>
 
     <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
@@ -1167,23 +1232,28 @@ body {
   <div class="left-panel">
     <div class="program-info-card">
       <div class="program-info-title">🌱 돌봄스타트과정 소개</div>
-      <div class="program-info-desc">돌봄지역사회에 관심을 갖고 첫 발을 내딛는 돌봄시민교육입니다. (필수과목 2, 선택과목 1)</div>
+      <div class="program-info-desc">돌봄지역사회에 관심을 갖고 첫 발을 내딛는 돌봄시민교육입니다. (필수과목 2, 선택과목 1) 11월 필수과정을 포함하여 필수과정 2개, 선택과정 1개를 이수해야 해요.</div>
       <div class="program-info-row"><span class="program-info-key">교육기간</span><span class="program-info-val">2026년 9월 ~ 11월</span></div>
-      <div class="program-info-row"><span class="program-info-key">정원</span><span class="program-info-val">40명</span></div>
+      <div class="program-info-row"><span class="program-info-key">정원</span><span class="program-info-val">회차별 15~20명 · 11월 통합워크숍 40명</span></div>
       <div class="program-info-row"><span class="program-info-key">모집대상</span><span class="program-info-val">돌봄지역사회에 관심 있는 시민 누구나</span></div>
-      <div class="program-info-row"><span class="program-info-key" style="width:78px;">함께하는 곳들</span><span class="program-info-val">울림두레돌봄사회적협동조합, 민트협동조합, 우리동물병원생명사회적협동조합</span></div>
+      <div class="program-info-row"><span class="program-info-key" style="width:78px;">함께하는 곳들</span><span class="program-info-val">울림두레돌봄사회적협동조합, 우리동물병원생명사회적협동조합</span></div>
     </div>
 
     <div class="legend" id="legend-schedule2">
-      <button class="legend-item active" id="cat-all-schedule2" onclick="showAllP('schedule2',this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
-      <button class="legend-item" id="cat-start1-schedule2" onclick="filterCourseP('schedule2','start1',this)"><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 돌봄스타트과정</button>
+      <button class="legend-item active" data-key="__all__" onclick="showAllP('combined',this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
+      <button class="legend-item" data-key="start1"    onclick="filterCourseP('combined','start1',this)"><div class="legend-dot" style="background:var(--ulim-bg);border:1px solid var(--ulim-bd);"></div>울림두레돌봄사협 — 돌봄스타트과정</button>
     </div>
 
     <div class="month-nav" id="monthnav-schedule2">
-      <span class="month-year">2026</span>
-      <button class="month-btn active" data-y="2026" data-m="9" onclick="showMonthP('schedule2',2026,9,this)">9월</button>
-      <button class="month-btn" data-y="2026" data-m="10" onclick="showMonthP('schedule2',2026,10,this)">10월</button>
-      <button class="month-btn" data-y="2026" data-m="11" onclick="showMonthP('schedule2',2026,11,this)">11월</button>
+      <span class="month-year">2026~27</span>
+      <button class="month-btn active" data-y="2026" data-m="6" onclick="showMonthP('combined',2026,6,this)">6월</button>
+      <button class="month-btn" data-y="2026" data-m="7" onclick="showMonthP('combined',2026,7,this)">7월</button>
+      <button class="month-btn" data-y="2026" data-m="8" onclick="showMonthP('combined',2026,8,this)">8월</button>
+      <button class="month-btn" data-y="2026" data-m="9" onclick="showMonthP('combined',2026,9,this)">9월</button>
+      <button class="month-btn" data-y="2026" data-m="10" onclick="showMonthP('combined',2026,10,this)">10월</button>
+      <button class="month-btn" data-y="2026" data-m="11" onclick="showMonthP('combined',2026,11,this)">11월</button>
+      <button class="month-btn" data-y="2026" data-m="12" onclick="showMonthP('combined',2026,12,this)">12월</button>
+      <button class="month-btn" data-y="2027" data-m="1" onclick="showMonthP('combined',2027,1,this)">27.1월</button>
     </div>
 
     <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
@@ -1212,26 +1282,28 @@ body {
   <div class="left-panel">
     <div class="program-info-card">
       <div class="program-info-title">🧭 마포돌봄리더를 위한 문화성장 프로그램</div>
-      <div class="program-info-desc">마포지역의 여러 기관에서 추천된 돌봄 리더 20분들의 그간 돌봄 실천과 공로를 공적으로 인정하고, 쉼과 역량강화를 위한 총 6회 프로그램을 진행합니다.</div>
+      <div class="program-info-desc">마포지역의 여러 기관에서 추천된 돌봄 리더 20분들의 그간 돌봄 실천과 공로를 공적으로 인정하고, 감정노동 해소, 동료 슈퍼비전과 연대감, 일상적 회복 탄력성 강화를 위한 총 6회 프로그램을 진행합니다.</div>
       <div class="program-info-row"><span class="program-info-key">교육기간</span><span class="program-info-val">2026년 8월 ~ 2027년 1월</span></div>
       <div class="program-info-row"><span class="program-info-key">정원</span><span class="program-info-val">20명</span></div>
       <div class="program-info-row"><span class="program-info-key">모집대상</span><span class="program-info-val">마포지역 각 기관에서 추천된 돌봄리더</span></div>
-      <div class="program-info-row"><span class="program-info-key" style="width:78px;">운영</span><span class="program-info-val">마포구사회적경제통합지원센터</span></div>
+      <div class="program-info-row"><span class="program-info-key" style="width:78px;">교육기관</span><span class="program-info-val">울림두레돌봄사회적협동조합</span></div>
     </div>
 
     <div class="legend" id="legend-schedule3">
-      <button class="legend-item active" id="cat-all-schedule3" onclick="showAllP('schedule3',this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
-      <button class="legend-item" id="cat-leader1-schedule3" onclick="filterCourseP('schedule3','leader1',this)"><div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak-bd);"></div>마포구사회적경제통합지원센터 — 문화성장 프로그램</button>
+      <button class="legend-item active" data-key="__all__" onclick="showAllP('combined',this)" style="background:var(--text);color:var(--white);border-color:transparent;">전체보기</button>
+      <button class="legend-item" data-key="leader1"   onclick="filterCourseP('combined','leader1',this)"  style=""><div class="legend-dot" style="background:var(--sabujak-bg);border:1px solid var(--sabujak-bd);"></div>울림두레돌봄사협 — 돌봄리더 성장과정</button>
     </div>
 
     <div class="month-nav" id="monthnav-schedule3">
       <span class="month-year">2026~27</span>
-      <button class="month-btn active" data-y="2026" data-m="8" onclick="showMonthP('schedule3',2026,8,this)">8월</button>
-      <button class="month-btn" data-y="2026" data-m="9" onclick="showMonthP('schedule3',2026,9,this)">9월</button>
-      <button class="month-btn" data-y="2026" data-m="10" onclick="showMonthP('schedule3',2026,10,this)">10월</button>
-      <button class="month-btn" data-y="2026" data-m="11" onclick="showMonthP('schedule3',2026,11,this)">11월</button>
-      <button class="month-btn" data-y="2026" data-m="12" onclick="showMonthP('schedule3',2026,12,this)">12월</button>
-      <button class="month-btn" data-y="2027" data-m="1" onclick="showMonthP('schedule3',2027,1,this)">27.1월</button>
+      <button class="month-btn active" data-y="2026" data-m="6" onclick="showMonthP('combined',2026,6,this)">6월</button>
+      <button class="month-btn" data-y="2026" data-m="7" onclick="showMonthP('combined',2026,7,this)">7월</button>
+      <button class="month-btn" data-y="2026" data-m="8" onclick="showMonthP('combined',2026,8,this)">8월</button>
+      <button class="month-btn" data-y="2026" data-m="9" onclick="showMonthP('combined',2026,9,this)">9월</button>
+      <button class="month-btn" data-y="2026" data-m="10" onclick="showMonthP('combined',2026,10,this)">10월</button>
+      <button class="month-btn" data-y="2026" data-m="11" onclick="showMonthP('combined',2026,11,this)">11월</button>
+      <button class="month-btn" data-y="2026" data-m="12" onclick="showMonthP('combined',2026,12,this)">12월</button>
+      <button class="month-btn" data-y="2027" data-m="1" onclick="showMonthP('combined',2027,1,this)">27.1월</button>
     </div>
 
     <div class="cal-hint">💡 날짜를 클릭하면 교육 상세 내용을 볼 수 있어요</div>
@@ -1366,7 +1438,7 @@ const COURSES = [
     sessions:[
       {label:'1강',date:'6/8 (월)', time:'10:00~13:00',subject:'건강의 사회적 결정요인 / 지역사회 통합돌봄',sub:'',instructor:'박봉희 이사 — 한국의료복지사회적협동조합 연합회'},
       {label:'2강',date:'6/9 (화)', time:'10:00~13:00',subject:'치매의 이해와 돌봄',sub:'',instructor:'조미경 간호사 — 인천평화의료복지사회적협동조합'},
-      {label:'3강',date:'6/10 (수)',time:'10:00~13:00',subject:'노인의 특성',sub:'',instructor:'강감미 사회복지사 — 울림통합돌봄센터'},
+      {label:'3강',date:'6/10 (수)',time:'10:00~13:00',subject:'노인의 특성',sub:'',instructor:'강경미 사회복지사 — 울림통합돌봄센터'},
       {label:'4강',date:'6/10 (수)',time:'10:00~13:00',subject:'통증 관리와 근력증진',sub:'',instructor:'이준기 작업치료사 — 마포의료복지사회적협동조합'},
       {label:'5강',date:'6/11 (목)',time:'10:00~13:00',subject:'연명의료결정제도의 이해',sub:'',instructor:'이현주 사전연명의료의향서상담사 — 마포의료복지사회적협동조합'},
       {label:'6강',date:'6/11 (목)',time:'10:00~13:00',subject:'구강건강증진과 관리',sub:'',instructor:'정민숙 치과위생사 — 마포의료복지사회적협동조합'},
@@ -1432,37 +1504,41 @@ const EVENTS = [
 const COURSES2 = [
   {
     key:'start1', org:'울림두레돌봄사회적협동조합', name:'돌봄스타트과정',
-    desc:'돌봄지역사회에 관심을 갖고 첫 발을 내딛는 돌봄시민교육입니다. (필수과목 2, 선택과목 1)',
-    meta:{정원:'40명', 일정:'2026.9.10 ~ 11월 중', 비고:''},
+    desc:'돌봄지역사회에 관심을 갖고 첫 발을 내딛는 돌봄시민교육입니다. (필수과목 2, 선택과목 1) 11월 필수과정을 포함하여 필수과정 2개, 선택과정 1개 이수가 필요합니다.',
+    meta:{정원:'15~20명(회차별) · 11월 통합워크숍 40명', 일정:'2026.9.10 ~ 11월 중'},
     sessions:[
-      {label:'1강',date:'2026.9.10 (목)',time:'10:00~13:00',subject:'동행실전기술(선), 돌봄시민입문(필)',sub:'',instructor:'울림두레돌봄사회적협동조합'},
-      {label:'2강',date:'2026.9.10 (목)',time:'13:00~17:00',subject:'돌봄시민입문(필), 주거돌봄기술(선)',sub:'',instructor:'울림두레돌봄사회적협동조합'},
-      {label:'3강',date:'2026.9.17 (목)',time:'10:00~13:00',subject:'식물 돌봄 기술(선), 돌봄시민입문(필)',sub:'',instructor:'울림두레돌봄사회적협동조합, 민트협동조합'},
-      {label:'4강',date:'2026.9.17 (목)',time:'13:00~17:00',subject:'돌봄시민입문(필), 동물돌봄기술(선)',sub:'',instructor:'울림두레돌봄사회적협동조합, 우리동물병원생명사회적협동조합'},
-      {label:'5강',date:'2026년 11월 중',time:'4시간',subject:'돌봄의향서워크숍, 서로돌봄실천활동 워크숍, 돌봄시민 위촉장 수여',sub:'필수',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'1강',date:'2026.9.10 (목)',time:'10:00~12:00',subject:'동행 실전 기술',sub:'선택 · 모놀라운지',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'2강',date:'2026.9.10 (목)',time:'13:00~15:00',subject:'돌봄 시민 입문',sub:'필수 · 모놀라운지',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'3강',date:'2026.9.10 (목)',time:'15:00~17:00',subject:'주거 돌봄 기술',sub:'선택 · 모놀라운지',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'4강',date:'2026.9.17 (목)',time:'10:00~12:00',subject:'식물 돌봄 기술',sub:'선택 · 플랫폼달',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'5강',date:'2026.9.17 (목)',time:'13:00~15:00',subject:'돌봄 시민 입문',sub:'필수 · 플랫폼달',instructor:'울림두레돌봄사회적협동조합'},
+      {label:'6강',date:'2026.9.17 (목)',time:'15:00~17:00',subject:'동물 돌봄 기술',sub:'선택 · 플랫폼달',instructor:'우리동물병원생명사회적협동조합'},
+      {label:'7강',date:'2026년 11월 중',time:'4시간',subject:'돌봄의향서워크숍, 서로돌봄실천활동 워크숍, 돌봄시민 위촉장 수여',sub:'필수 · 장소 미정',instructor:'울림두레돌봄사회적협동조합'},
     ],
   },
 ];
 const EVENTS2 = [
   {month:9,day:10, ci:0,si:0,label:'스타트 1강'},
   {month:9,day:10, ci:0,si:1,label:'스타트 2강'},
-  {month:9,day:17, ci:0,si:2,label:'스타트 3강'},
+  {month:9,day:10, ci:0,si:2,label:'스타트 3강'},
   {month:9,day:17, ci:0,si:3,label:'스타트 4강'},
+  {month:9,day:17, ci:0,si:4,label:'스타트 5강'},
+  {month:9,day:17, ci:0,si:5,label:'스타트 6강'},
 ];
 
 /* ── 돌봄리더 성장과정 (schedule3) ── */
 const COURSES3 = [
   {
-    key:'leader1', org:'마포구사회적경제통합지원센터', name:'마포돌봄리더를 위한 문화성장 프로그램',
-    desc:'마포지역의 여러 기관에서 추천된 돌봄 리더 20분들의 그간 돌봄 실천과 공로를 공적으로 인정하고, 쉼과 역량강화를 위한 총 6회 프로그램을 진행합니다.',
-    meta:{정원:'20명', 일정:'2026.8.18 ~ 2027.1.26', 비고:''},
+    key:'leader1', org:'울림두레돌봄사회적협동조합', name:'마포돌봄리더를 위한 문화성장 프로그램',
+    desc:'마포지역의 여러 기관에서 추천된 돌봄 리더 20분들의 그간 돌봄 실천과 공로를 공적으로 인정하고, 감정노동 해소, 동료 슈퍼비전과 연대감, 일상적 회복 탄력성 강화를 위한 총 6회 프로그램을 진행합니다.',
+    meta:{정원:'20명', 일정:'2026.8.18 ~ 2027.1.26'},
     sessions:[
-      {label:'1강',date:'2026.8.18 (화)',time:'19:00~21:00',subject:'예방을 위한 물리치료',sub:'',instructor:''},
-      {label:'2강',date:'2026.9.22 (화)',time:'19:00~21:00',subject:'꽃다발 만들기',sub:'',instructor:''},
-      {label:'3강',date:'2026.10.27 (화)',time:'19:00~21:00',subject:'싱잉볼 요가',sub:'',instructor:''},
-      {label:'4강',date:'2026.11.24 (화)',time:'19:00~21:00',subject:'문화공연 관람',sub:'',instructor:''},
-      {label:'5강',date:'2026.12.22 (화)',time:'19:00~21:00',subject:'사전돌봄의향서',sub:'',instructor:''},
-      {label:'6강',date:'2027.1.26 (화)',time:'19:00~21:00',subject:'생애말기돌봄',sub:'',instructor:''},
+      {label:'1강',date:'2026.8.18 (화)',time:'19:00~21:00',subject:'나와 이웃을 함께 돌보는 간단 물리치료',sub:'전.진.상. 센터',instructor:''},
+      {label:'2강',date:'2026.9.22 (화)',time:'19:00~21:00',subject:'나에게 선사하는 꽃다발',sub:'전.진.상. 센터',instructor:''},
+      {label:'3강',date:'2026.10.27 (화)',time:'19:00~21:00',subject:'호흡과 명상으로 치유하는 싱잉볼 요가',sub:'전.진.상. 센터',instructor:''},
+      {label:'4강',date:'2026.11.24 (화)',time:'19:00~21:00',subject:'동료와 함께 문화공연 관람',sub:'장소 미정',instructor:''},
+      {label:'5강',date:'2026.12.22 (화)',time:'19:00~21:00',subject:'지역사회 통합돌봄을 위한 사전돌봄의향서',sub:'전.진.상. 센터',instructor:''},
+      {label:'6강',date:'2027.1.26 (화)',time:'19:00~21:00',subject:'생애말기돌봄 교육',sub:'전.진.상. 센터',instructor:''},
     ],
   },
 ];
@@ -1481,9 +1557,11 @@ const EVENTS3 = [
    예: { courseKey:'ulim1', name:'김OO', cohort:'1기 수료', content:'후기 내용...', date:'2026.07' }
 */
 const REVIEWS = [
+  {type:'link', platform:'naver', url:'https://blog.naver.com/animalscoop/224359558135', title:'후기 게시물 보러가기', date:'2026.07'},
+  {type:'link', platform:'naver', url:'https://blog.naver.com/animalscoop/224359461779', title:'후기 게시물 보러가기', date:'2026.07'},
+  {type:'link', platform:'instagram', url:'https://www.instagram.com/p/DbUyvg2j-Fw/', title:'후기 게시물 보러가기', date:'2026.07'},
 ];
 
-let selectedChip = null;
 let currentMonth = 6;
 let activeFilterKey = null; // null = 전체보기
 
@@ -1516,24 +1594,28 @@ function getDays(y,m){ return new Date(y,m,0).getDate(); }
 function getFirst(y,m){ return new Date(y,m-1,1).getDay(); }
 
 /* ── 프로그램(과정) 레지스트리 — 리스타트/스타트/리더성장 공용 캘린더 엔진 ── */
+/* ── 통합 교육일정 데이터 (돌봄리스타트+돌봄스타트+돌봄리더성장 전체) ── */
+const COURSES_ALL = [...COURSES, ...COURSES2, ...COURSES3];
+const OFFSET2 = COURSES.length;
+const OFFSET3 = COURSES.length + COURSES2.length;
+const EVENTS_ALL = [
+  ...EVENTS,
+  ...EVENTS2.map(e => ({...e, ci: e.ci + OFFSET2})),
+  ...EVENTS3.map(e => ({...e, ci: e.ci + OFFSET3})),
+];
+
+/* ── 통합 프로그램(과정) 레지스트리 — 3개 과정이 하나의 달력을 공유합니다.
+   같은 달력/상세패널이 리스타트·스타트·리더성장 탭 모두에 동일하게 표시되고,
+   한 탭에서 조작한 상태(월/필터/선택)는 다른 탭에도 그대로 반영됩니다. ── */
 const PROGRAMS = {
-  schedule: {
-    courses: COURSES, events: EVENTS, closed: CLOSED_COURSES, applyLinks: APPLY_LINKS,
-    calBody: 'cal-body', rightPanel: 'right-panel',
-    month: [2026, 6], filterKey: null, selectedChip: null,
-    instructorLabel: '강사', contact: CONTACT, contactExcludeKeys: ['mapo'],
-  },
-  schedule2: {
-    courses: COURSES2, events: EVENTS2, closed: [], applyLinks: {},
-    calBody: 'cal-body-schedule2', rightPanel: 'right-panel-schedule2',
-    month: [2026, 9], filterKey: null, selectedChip: null,
-    instructorLabel: '주관', contact: null, contactExcludeKeys: [],
-  },
-  schedule3: {
-    courses: COURSES3, events: EVENTS3, closed: [], applyLinks: {},
-    calBody: 'cal-body-schedule3', rightPanel: 'right-panel-schedule3',
-    month: [2026, 8], filterKey: null, selectedChip: null,
-    instructorLabel: '주관', contact: null, contactExcludeKeys: [],
+  combined: {
+    courses: COURSES_ALL, events: EVENTS_ALL, closed: CLOSED_COURSES, applyLinks: APPLY_LINKS,
+    calBodyIds: ['cal-body', 'cal-body-schedule2', 'cal-body-schedule3'],
+    rightPanelIds: ['right-panel', 'right-panel-schedule2', 'right-panel-schedule3'],
+    legendIds: ['legend-schedule', 'legend-schedule2', 'legend-schedule3'],
+    monthNavIds: ['monthnav-schedule', 'monthnav-schedule2', 'monthnav-schedule3'],
+    month: [2026, 6], filterKey: null, selectedChips: null,
+    instructorLabel: '강사', contact: CONTACT, contactExcludeKeys: ['mapo', 'leader1'],
   },
 };
 
@@ -1541,19 +1623,23 @@ const PROGRAMS = {
 function showAllP(prog, btn){
   const p = PROGRAMS[prog];
   p.filterKey = null;
-  const legendRoot = document.getElementById('legend-'+prog);
-  if(legendRoot){
+  p.legendIds.forEach(legendId=>{
+    const legendRoot = document.getElementById(legendId);
+    if(!legendRoot) return;
     legendRoot.querySelectorAll('.legend-item').forEach(b=>{
       b.classList.remove('active');
       b.style.background = '';
       b.style.color = '';
       b.style.borderColor = '';
     });
-  }
-  btn.classList.add('active');
-  btn.style.background = 'var(--text)';
-  btn.style.color = 'var(--white)';
-  btn.style.borderColor = 'transparent';
+    const allBtn = legendRoot.querySelector('[data-key="__all__"]');
+    if(allBtn){
+      allBtn.classList.add('active');
+      allBtn.style.background = 'var(--text)';
+      allBtn.style.color = 'var(--white)';
+      allBtn.style.borderColor = 'transparent';
+    }
+  });
   renderCalP(prog);
   renderAllCoursesP(prog);
 }
@@ -1562,34 +1648,38 @@ function showAllP(prog, btn){
 function filterCourseP(prog, key, btn){
   const p = PROGRAMS[prog];
   if(p.filterKey === key){
-    showAllP(prog, document.getElementById('cat-all-'+prog) || document.getElementById('cat-all'));
+    showAllP(prog, btn);
     return;
   }
   p.filterKey = key;
 
-  const legendRoot = document.getElementById('legend-'+prog);
-  if(legendRoot){
+  p.legendIds.forEach(legendId=>{
+    const legendRoot = document.getElementById(legendId);
+    if(!legendRoot) return;
     legendRoot.querySelectorAll('.legend-item').forEach(b=>{
       b.classList.remove('active');
       b.style.background = '';
       b.style.color = '';
       b.style.borderColor = '';
     });
-  }
-
-  btn.classList.add('active');
-  btn.style.background = CAT_COLORS[key] ? CAT_COLORS[key].bg : COL[key].bg;
+    const targetBtn = legendRoot.querySelector(`[data-key="${key}"]`);
+    if(targetBtn){
+      targetBtn.classList.add('active');
+      targetBtn.style.background = CAT_COLORS[key] ? CAT_COLORS[key].bg : COL[key].bg;
+    }
+  });
 
   const firstEvent = p.events.find(e => p.courses[e.ci].key === key);
   if(firstEvent){
     const y = firstEvent.y || 2026;
     p.month = [y, firstEvent.month];
-    const navRoot = document.getElementById('monthnav-'+prog);
-    if(navRoot){
+    p.monthNavIds.forEach(navId=>{
+      const navRoot = document.getElementById(navId);
+      if(!navRoot) return;
       navRoot.querySelectorAll('.month-btn').forEach(b=>{
         b.classList.toggle('active', Number(b.dataset.y)===y && Number(b.dataset.m)===firstEvent.month);
       });
-    }
+    });
   }
 
   renderCalP(prog);
@@ -1597,13 +1687,13 @@ function filterCourseP(prog, key, btn){
   if(firstEvent){
     setTimeout(()=>{
       const y = firstEvent.y || 2026;
-      const chip = document.querySelector(
+      const chips = [...document.querySelectorAll(
         `[data-ev-key="${prog}-${y}-${firstEvent.month}-${firstEvent.day}-${firstEvent.ci}-${firstEvent.si}"]`
-      );
-      if(chip){
-        if(p.selectedChip) p.selectedChip.classList.remove('selected');
-        p.selectedChip = chip;
-        chip.classList.add('selected');
+      )];
+      if(chips.length){
+        if(p.selectedChips) p.selectedChips.forEach(c=>c.classList.remove('selected'));
+        chips.forEach(c=>c.classList.add('selected'));
+        p.selectedChips = chips;
       }
     }, 50);
   }
@@ -1616,64 +1706,74 @@ function filterCourseP(prog, key, btn){
 function showMonthP(prog, y, m, btn){
   const p = PROGRAMS[prog];
   p.month = [y, m];
-  const navRoot = document.getElementById('monthnav-'+prog);
-  if(navRoot) navRoot.querySelectorAll('.month-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  p.monthNavIds.forEach(navId=>{
+    const navRoot = document.getElementById(navId);
+    if(!navRoot) return;
+    navRoot.querySelectorAll('.month-btn').forEach(b=>{
+      b.classList.toggle('active', Number(b.dataset.y)===y && Number(b.dataset.m)===m);
+    });
+  });
   renderCalP(prog);
 }
 
-/* ── 캘린더 렌더 (필터 적용) ── */
+/* ── 캘린더 렌더 (필터 적용) — 모든 탭의 달력 DOM에 동일하게 렌더링 ── */
 function renderCalP(prog){
   const p = PROGRAMS[prog];
   const [y, month] = p.month;
   const total=getDays(y,month), first=getFirst(y,month), prevTotal=getDays(y,month-1);
-  const body=document.getElementById(p.calBody);
-  if(!body) return;
-  body.innerHTML='';
 
   const visibleEvents = p.filterKey
     ? p.events.filter(e => p.courses[e.ci].key === p.filterKey)
     : p.events;
 
-  for(let i=0;i<first;i++){
-    const cell=mk('div','cal-cell other');
-    const dn=mk('div','day-num other'); dn.textContent=prevTotal-first+1+i;
-    cell.appendChild(dn); body.appendChild(cell);
-  }
+  p.calBodyIds.forEach(bodyId=>{
+    const body=document.getElementById(bodyId);
+    if(!body) return;
+    body.innerHTML='';
 
-  for(let d=1;d<=total;d++){
-    const dow=(first+d-1)%7;
-    const cell=mk('div','cal-cell');
-    const dn=mk('div','day-num'+(dow===0?' sun':dow===6?' sat':''));
-    dn.textContent=d; cell.appendChild(dn);
+    for(let i=0;i<first;i++){
+      const cell=mk('div','cal-cell other');
+      const dn=mk('div','day-num other'); dn.textContent=prevTotal-first+1+i;
+      cell.appendChild(dn); body.appendChild(cell);
+    }
 
-    visibleEvents.filter(e=>(e.y||2026)===y && e.month===month && e.day===d).forEach(ev=>{
-      const co=p.courses[ev.ci], col=COL[co.key];
-      const chip=document.createElement('button');
-      chip.className='ev-chip';
-      chip.style.cssText=`background:${col.bg};color:${col.tc};border:0.5px solid ${col.bd}66;`;
-      chip.textContent=ev.label;
-      chip.dataset.evKey = `${prog}-${y}-${month}-${d}-${ev.ci}-${ev.si}`;
-      chip.onclick=()=>selectEventP(prog, ev, y, month, d, chip);
-      cell.appendChild(chip);
-    });
+    for(let d=1;d<=total;d++){
+      const dow=(first+d-1)%7;
+      const cell=mk('div','cal-cell');
+      const dn=mk('div','day-num'+(dow===0?' sun':dow===6?' sat':''));
+      dn.textContent=d; cell.appendChild(dn);
 
-    body.appendChild(cell);
-  }
+      visibleEvents.filter(e=>(e.y||2026)===y && e.month===month && e.day===d).forEach(ev=>{
+        const co=p.courses[ev.ci], col=COL[co.key];
+        const chip=document.createElement('button');
+        chip.className='ev-chip';
+        chip.style.cssText=`background:${col.bg};color:${col.tc};border:0.5px solid ${col.bd}66;`;
+        chip.textContent=ev.label;
+        chip.dataset.evKey = `${prog}-${y}-${month}-${d}-${ev.ci}-${ev.si}`;
+        chip.onclick=()=>selectEventP(prog, ev, y, month, d, chip);
+        cell.appendChild(chip);
+      });
 
-  const used=first+total, remain=(7-(used%7))%7;
-  for(let i=1;i<=remain;i++){
-    const cell=mk('div','cal-cell other');
-    const dn=mk('div','day-num other'); dn.textContent=i;
-    cell.appendChild(dn); body.appendChild(cell);
-  }
+      body.appendChild(cell);
+    }
+
+    const used=first+total, remain=(7-(used%7))%7;
+    for(let i=1;i<=remain;i++){
+      const cell=mk('div','cal-cell other');
+      const dn=mk('div','day-num other'); dn.textContent=i;
+      cell.appendChild(dn); body.appendChild(cell);
+    }
+  });
 }
 
 /* ── 캘린더 칩 선택 ── */
 function selectEventP(prog, ev, y, month, day, chip){
   const p = PROGRAMS[prog];
-  if(p.selectedChip) p.selectedChip.classList.remove('selected');
-  p.selectedChip=chip; chip.classList.add('selected');
+  const key = `${prog}-${y}-${month}-${day}-${ev.ci}-${ev.si}`;
+  const chips = [...document.querySelectorAll(`.ev-chip[data-ev-key="${key}"]`)];
+  if(p.selectedChips) p.selectedChips.forEach(c=>c.classList.remove('selected'));
+  chips.forEach(c=>c.classList.add('selected'));
+  p.selectedChips = chips;
   const co=p.courses[ev.ci], col=COL[co.key];
   const dow=WD[new Date(y,month-1,day).getDay()];
   renderDetailP(prog, co, col, ev.si, `${month}월 ${day}일 (${dow})`);
@@ -1687,31 +1787,36 @@ function jumpToSessionP(prog, co, sessionIdx){
   const y = ev.y || 2026;
   p.month = [y, ev.month];
 
-  const navRoot = document.getElementById('monthnav-'+prog);
-  if(navRoot){
+  p.monthNavIds.forEach(navId=>{
+    const navRoot = document.getElementById(navId);
+    if(!navRoot) return;
     navRoot.querySelectorAll('.month-btn').forEach(b=>{
       b.classList.toggle('active', Number(b.dataset.y)===y && Number(b.dataset.m)===ev.month);
     });
-  }
+  });
   renderCalP(prog);
+
+  // 패널의 활성 세션(박스 색/테두리)도 클릭한 세션으로 갱신
+  const col = COL[co.key];
+  const dow = WD[new Date(y, ev.month-1, ev.day).getDay()];
+  renderDetailP(prog, co, col, sessionIdx, `${ev.month}월 ${ev.day}일 (${dow})`);
 
   setTimeout(()=>{
     const key = `${prog}-${y}-${ev.month}-${ev.day}-${ev.ci}-${ev.si}`;
-    const chip = document.querySelector(`.ev-chip[data-ev-key="${key}"]`);
-    if(chip){
-      if(p.selectedChip) p.selectedChip.classList.remove('selected');
-      p.selectedChip = chip;
-      chip.classList.add('selected');
-      chip.scrollIntoView({behavior:'smooth', block:'center'});
+    const chips = [...document.querySelectorAll(`.ev-chip[data-ev-key="${key}"]`)];
+    if(chips.length){
+      if(p.selectedChips) p.selectedChips.forEach(c=>c.classList.remove('selected'));
+      chips.forEach(c=>c.classList.add('selected'));
+      p.selectedChips = chips;
+      const visibleChip = chips.find(c => c.offsetParent !== null) || chips[0];
+      visibleChip.scrollIntoView({behavior:'smooth', block:'center'});
     }
   }, 60);
 }
 
-/* ── 상세 패널 렌더 ── */
+/* ── 상세 패널 렌더 — 모든 탭의 오른쪽 패널에 동일하게 렌더링 ── */
 function renderDetailP(prog, co, col, activeIdx, dateStr){
   const p = PROGRAMS[prog];
-  const rp=document.getElementById(p.rightPanel);
-  if(!rp) return;
   const coIdx = p.courses.indexOf(co);
   const courseReviews = REVIEWS.filter(r => r.courseKey === co.key);
 
@@ -1760,7 +1865,7 @@ function renderDetailP(prog, co, col, activeIdx, dateStr){
 
   const showContact = p.contact && !(p.contactExcludeKeys||[]).includes(co.key);
 
-  rp.innerHTML=`
+  const html = `
     <button class="back-btn" onclick="renderAllCoursesP('${prog}')">← 전체 과정 목록</button>
     <div class="panel-inner">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
@@ -1796,39 +1901,64 @@ function renderDetailP(prog, co, col, activeIdx, dateStr){
       </div>
     </div>`;
 
+  p.rightPanelIds.forEach(id=>{
+    const rp=document.getElementById(id);
+    if(rp) rp.innerHTML = html;
+  });
+
   setTimeout(()=>{
-    const active=rp.querySelector('.active-session');
-    if(active) active.scrollIntoView({behavior:'smooth',block:'nearest'});
+    p.rightPanelIds.forEach(id=>{
+      const rp=document.getElementById(id);
+      if(!rp) return;
+      const active=rp.querySelector('.active-session');
+      if(active) active.scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
   },50);
 }
 
-/* ── 전체 과정 목록 ── */
+/* ── 전체 과정 목록 — 모든 탭의 오른쪽 패널에 동일하게 렌더링 ── */
+/* ── 탭별 기본 과정 목록 범위 — 달력은 전체가 다 보이지만,
+   각 탭의 "전체 과정 목록"은 해당 탭 소속 과정만 기본으로 보여줍니다. ── */
+const TAB_SCOPE = {
+  'right-panel':            COURSES.map(c=>c.key),
+  'right-panel-schedule2':  COURSES2.map(c=>c.key),
+  'right-panel-schedule3':  COURSES3.map(c=>c.key),
+};
+
+function buildCourseCardHTML(prog, co){
+  const p = PROGRAMS[prog];
+  const idx = p.courses.indexOf(co);
+  const col=COL[co.key];
+  const applyUrl = p.applyLinks[co.key];
+  const statusBadge = p.closed.includes(co.key)
+    ? `<span class="status-badge status-done">모집완료</span>`
+    : applyUrl
+      ? `<span class="status-badge status-open">모집중</span>`
+      : `<span class="status-badge status-closed">모집예정</span>`;
+  return `<div class="course-card" onclick="openCourseP('${prog}', ${idx})">
+    <div class="course-card-top">
+      <span class="course-card-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
+      ${statusBadge}
+    </div>
+    <div class="course-card-name" style="margin:5px 0 3px;">${co.name}</div>
+    <div class="course-card-meta">📅 ${co.meta['일정']} &nbsp;·&nbsp; 👥 ${co.meta['정원']}</div>
+  </div>`;
+}
+
 function renderAllCoursesP(prog){
   const p = PROGRAMS[prog];
-  if(p.selectedChip){ p.selectedChip.classList.remove('selected'); p.selectedChip=null; }
-  const rp=document.getElementById(p.rightPanel);
-  if(!rp) return;
+  if(p.selectedChips){ p.selectedChips.forEach(c=>c.classList.remove('selected')); p.selectedChips=null; }
 
-  rp.innerHTML=`<div class="all-courses">
-    <div class="all-courses-title">전체 과정 목록 <span style="font-weight:400;color:var(--hint);">(${p.courses.length}개 과정)</span></div>
-    ${p.courses.map((co,i)=>{
-      const col=COL[co.key];
-      const applyUrl = p.applyLinks[co.key];
-      const statusBadge = p.closed.includes(co.key)
-        ? `<span class="status-badge status-done">모집완료</span>`
-        : applyUrl
-          ? `<span class="status-badge status-open">모집중</span>`
-          : `<span class="status-badge status-closed">모집예정</span>`;
-      return `<div class="course-card" onclick="openCourseP('${prog}', ${i})">
-        <div class="course-card-top">
-          <span class="course-card-badge" style="background:${col.bg};color:${col.tc};">${co.org}</span>
-          ${statusBadge}
-        </div>
-        <div class="course-card-name" style="margin:5px 0 3px;">${co.name}</div>
-        <div class="course-card-meta">📅 ${co.meta['일정']} &nbsp;·&nbsp; 👥 ${co.meta['정원']}</div>
-      </div>`;
-    }).join('')}
-  </div>`;
+  p.rightPanelIds.forEach(id=>{
+    const rp=document.getElementById(id);
+    if(!rp) return;
+    const scopeKeys = TAB_SCOPE[id];
+    const list = scopeKeys ? p.courses.filter(co=>scopeKeys.includes(co.key)) : p.courses;
+    rp.innerHTML = `<div class="all-courses">
+      <div class="all-courses-title">전체 과정 목록 <span style="font-weight:400;color:var(--hint);">(${list.length}개 과정)</span></div>
+      ${list.map(co=>buildCourseCardHTML(prog, co)).join('')}
+    </div>`;
+  });
 }
 
 /* ── 과정 열기 ── */
@@ -1837,32 +1967,110 @@ function openCourseP(prog, idx){
   const co=p.courses[idx], col=COL[co.key];
   renderDetailP(prog, co, col, -1, '과정 전체 일정');
 
-  const legendRoot = document.getElementById('legend-'+prog);
-  if(legendRoot){
+  p.legendIds.forEach(legendId=>{
+    const legendRoot = document.getElementById(legendId);
+    if(!legendRoot) return;
     legendRoot.querySelectorAll('.legend-item').forEach(b=>{
       b.classList.remove('active');
       b.style.background = '';
       b.style.color = '';
       b.style.borderColor = '';
     });
-    const btn = document.getElementById('cat-'+co.key+'-'+prog) || document.getElementById('cat-'+co.key);
+    const btn = legendRoot.querySelector(`[data-key="${co.key}"]`);
     if(btn){
       btn.classList.add('active');
       btn.style.background = CAT_COLORS[co.key] ? CAT_COLORS[co.key].bg : col.bg;
     }
-  }
-  // 달력도 해당 과정으로 필터
+  });
+
+  // 달력도 해당 과정으로 필터 + 그 과정의 첫 일정이 있는 달로 이동
   p.filterKey = co.key;
+
+  const firstEvent = p.events
+    .filter(e => p.courses[e.ci] === co)
+    .sort((a,b)=>{
+      const ay=a.y||2026, by=b.y||2026;
+      if(ay!==by) return ay-by;
+      if(a.month!==b.month) return a.month-b.month;
+      return a.day-b.day;
+    })[0];
+
+  if(firstEvent){
+    const y = firstEvent.y || 2026;
+    p.month = [y, firstEvent.month];
+    p.monthNavIds.forEach(navId=>{
+      const navRoot = document.getElementById(navId);
+      if(!navRoot) return;
+      navRoot.querySelectorAll('.month-btn').forEach(b=>{
+        b.classList.toggle('active', Number(b.dataset.y)===y && Number(b.dataset.m)===firstEvent.month);
+      });
+    });
+  }
+
   renderCalP(prog);
+
+  if(firstEvent){
+    setTimeout(()=>{
+      const y = firstEvent.y || 2026;
+      const key = `${prog}-${y}-${firstEvent.month}-${firstEvent.day}-${firstEvent.ci}-${firstEvent.si}`;
+      const chips = [...document.querySelectorAll(`.ev-chip[data-ev-key="${key}"]`)];
+      if(chips.length){
+        if(p.selectedChips) p.selectedChips.forEach(c=>c.classList.remove('selected'));
+        chips.forEach(c=>c.classList.add('selected'));
+        p.selectedChips = chips;
+      }
+    }, 60);
+  }
 }
 
-/* ── 돌봄리스타트과정(schedule) 기존 함수명 호환 래퍼 ──
-   기존 페이지의 정적 HTML(legend/월탭 버튼 등)이 예전 함수명을 그대로 호출하므로 유지합니다. */
-function showAll(btn){ showAllP('schedule', btn); }
-function filterCourse(key, btn){ filterCourseP('schedule', key, btn); }
-function showMonth(m, btn){ showMonthP('schedule', 2026, m, btn); }
-function renderCal(month){ PROGRAMS.schedule.month = [2026, month]; renderCalP('schedule'); }
-function renderAllCourses(){ renderAllCoursesP('schedule'); }
+/* ── 탭 클릭 시 해당 과정의 가장 첫 일정을 달력에서 선택해 보여줌
+   (달력 자체는 전체 과정이 계속 보이고, 선택/상세보기만 그 과정의 첫 회차로 맞춰짐) ── */
+const TAB_KEYS = {
+  schedule:  COURSES.map(c=>c.key),
+  schedule2: COURSES2.map(c=>c.key),
+  schedule3: COURSES3.map(c=>c.key),
+};
+
+function selectTabDefaultSession(tabKey){
+  const p = PROGRAMS.combined;
+  const keys = TAB_KEYS[tabKey];
+  if(!keys) return;
+
+  const candidates = p.events.filter(e => keys.includes(p.courses[e.ci].key));
+  if(!candidates.length) return;
+
+  const first = candidates.slice().sort((a,b)=>{
+    const ay=a.y||2026, by=b.y||2026;
+    if(ay!==by) return ay-by;
+    if(a.month!==b.month) return a.month-b.month;
+    return a.day-b.day;
+  })[0];
+
+  const y = first.y || 2026;
+  p.month = [y, first.month];
+  p.monthNavIds.forEach(navId=>{
+    const navRoot = document.getElementById(navId);
+    if(!navRoot) return;
+    navRoot.querySelectorAll('.month-btn').forEach(b=>{
+      b.classList.toggle('active', Number(b.dataset.y)===y && Number(b.dataset.m)===first.month);
+    });
+  });
+  renderCalP('combined');
+
+  const co = p.courses[first.ci], col = COL[co.key];
+  const dow = WD[new Date(y, first.month-1, first.day).getDay()];
+  renderDetailP('combined', co, col, first.si, `${first.month}월 ${first.day}일 (${dow})`);
+
+  setTimeout(()=>{
+    const key = `combined-${y}-${first.month}-${first.day}-${first.ci}-${first.si}`;
+    const chips = [...document.querySelectorAll(`.ev-chip[data-ev-key="${key}"]`)];
+    if(chips.length){
+      if(p.selectedChips) p.selectedChips.forEach(c=>c.classList.remove('selected'));
+      chips.forEach(c=>c.classList.add('selected'));
+      p.selectedChips = chips;
+    }
+  }, 60);
+}
 
 
 /* ── 기관 소개 데이터 ── */
@@ -1971,8 +2179,8 @@ function goFromIntro(page){
 
   if(page === 'orgs') renderOrgsPage();
   if(page === 'reviews') renderReviewsPage();
+  if(flexPages.includes(page)) selectTabDefaultSession(page);
 }
-
 /* ── 홈(인트로)으로 돌아가기 ── */
 function goHome(){
   const intro = document.getElementById('page-intro');
@@ -2018,6 +2226,7 @@ function switchPage(page, btn){
 
   if(page === 'orgs') renderOrgsPage();
   if(page === 'reviews') renderReviewsPage();
+  if(flexPages.includes(page)) selectTabDefaultSession(page);
 }
 
 /* ── 기관 소개 페이지 렌더 ── */
@@ -2061,10 +2270,31 @@ function renderOrgsPage(){
 }
 
 /* ── 후기 카드 렌더 (공용) ── */
+const PLATFORM_META = {
+  naver:     {label:'네이버 블로그', color:'#03C75A', icon:'N'},
+  instagram: {label:'인스타그램',     color:'#E1306C', icon:'📷'},
+};
+
 function renderReviewCard(r){
-  const co = COURSES.find(c => c.key === r.courseKey);
+  const co = COURSES_ALL.find(c => c.key === r.courseKey);
   const col = co ? COL[co.key] : COL.common;
   const courseLabel = co ? co.name : '';
+
+  if(r.type === 'link'){
+    const pm = PLATFORM_META[r.platform] || {label:r.platform||'외부 게시물', color:'#999', icon:'🔗'};
+    const imageHTML = r.image
+      ? `<img src="${r.image}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
+      : `<div class="review-link-image" style="background:${pm.color};">${pm.icon}</div>`;
+    return `
+      <a class="review-link-card" href="${r.url}" target="_blank" rel="noopener">
+        ${imageHTML}
+        <span class="review-link-badge">${pm.label}</span>
+        <div class="review-link-overlay">
+          <div class="review-link-title">${r.title || '후기 게시물 보러가기'}</div>
+        </div>
+      </a>`;
+  }
+
   return `
     <div class="review-card">
       <div class="review-card-top">
@@ -2078,8 +2308,18 @@ function renderReviewCard(r){
 /* ── 참여 후기 페이지 렌더 ── */
 function renderReviewsPage(){
   const el = document.getElementById('page-reviews');
-  const body = REVIEWS.length > 0
-    ? `<div class="reviews-grid">${REVIEWS.map(renderReviewCard).join('')}</div>`
+  const linkReviews = REVIEWS.filter(r => r.type === 'link');
+  const quoteReviews = REVIEWS.filter(r => r.type !== 'link');
+
+  const linkBody = linkReviews.length > 0
+    ? `<div class="reviews-link-grid">${linkReviews.map(renderReviewCard).join('')}</div>`
+    : '';
+  const quoteBody = quoteReviews.length > 0
+    ? `<div class="reviews-grid" style="margin-top:${linkReviews.length?'18px':'8px'};">${quoteReviews.map(renderReviewCard).join('')}</div>`
+    : '';
+
+  const body = (linkBody || quoteBody)
+    ? linkBody + quoteBody
     : `<div class="review-empty">아직 등록된 후기가 없습니다.<br>참여자 후기가 준비되는 대로 이곳에서 안내해드릴게요.</div>`;
 
   el.innerHTML = `
@@ -2090,7 +2330,7 @@ function renderReviewsPage(){
         <div style="font-size:0.75rem;color:var(--muted);margin-top:5px;">교육에 참여한 분들의 생생한 후기를 모았습니다.</div>
       </div>
       ${body}
-      <div id="reviews-footer-logo"></div>
+      <div id="reviews-footer-logo" style="text-align:center;margin-top:24px;"></div>
     </div>`;
   renderLogoEl('reviews-footer-logo');
 }
@@ -2133,7 +2373,7 @@ function openOrgDetail(key){
   const scheduleBtn = org.courses.length > 0
     ? `<button class="org-go-schedule-btn"
         style="background:var(--text);margin-top:8px;"
-        onclick="closeOrgDetail();switchPage('schedule',document.getElementById('nav-schedule'));setTimeout(()=>{const b=document.getElementById('cat-${org.key}');if(b)filterCourse('${org.key}',b);},100)">
+        onclick="closeOrgDetail();switchPage('schedule',document.getElementById('nav-schedule'));setTimeout(()=>{const b=document.querySelector('#legend-schedule [data-key=\"${org.key}\"]');if(b)filterCourseP('combined','${org.key}',b);},100)">
         📅 교육일정에서 보기
       </button>`
     : '';
@@ -2185,12 +2425,8 @@ function renderLogoEl(containerId){
 }
 
 // 초기 렌더
-renderCal(6);
-renderAllCourses();
-renderCalP('schedule2');
-renderAllCoursesP('schedule2');
-renderCalP('schedule3');
-renderAllCoursesP('schedule3');
+renderCalP('combined');
+renderAllCoursesP('combined');
 renderLogoEl('cal-footer-logo');
 renderLogoEl('schedule2-footer-logo');
 renderLogoEl('schedule3-footer-logo');
